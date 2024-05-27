@@ -13,19 +13,20 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/', function () {
-    return view('landingPage.home');
-});
-Route::get('/about', function () {
-    return view('landingPage.about');
-});
-Route::get('/contact', function () {
-    return view('landingPage.contact');
-});
-Route::get('/service', function () {
-    return view('landingPage.services');
-});
+
 Route::middleware('guest')->group(function () {
-    Route::get('/', [AuthController::class, 'index'])->name('login');
-    Route::post('/', [AuthController::class, 'store']);
+    Route::get('/', function () {
+        return view('pages.landingPage.home');
+    });
+    Route::get('/about', function () {
+        return view('pages.landingPage.about');
+    });
+    Route::get('/contact', function () {
+        return view('pages.landingPage.contact');
+    });
+    Route::get('/service', function () {
+        return view('pages.landingPage.services');
+    });
+    Route::get('login', [AuthController::class, 'index'])->name('login');
+    Route::post('login', [AuthController::class, 'store']);
 });
