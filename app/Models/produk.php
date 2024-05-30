@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -22,5 +23,15 @@ class Produk extends Model
     public function kategori()
     {
         return $this->belongsTo(Kategori::class, 'id_kategori', 'id_kategori');
+    }
+
+    public function keranjang()
+    {
+        return $this->belongsTo(Keranjang::class, 'id_produk', 'id_produk');
+    }
+
+    public function detail_transaksi()
+    {
+        return $this->belongsTo(DetailTransaksi::class, 'id_produk', 'id_produk');
     }
 }

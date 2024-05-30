@@ -11,7 +11,7 @@
           <li class="breadcrumb-item active">Produk</li>
         </ol>
       </nav>
-    </div><!-- End Page Title -->
+    </div>
 
     <h1 class="my-4">Daftar Produk</h1>
     <a href="{{ route('produk.create') }}" class="btn btn-primary mb-3">Buat Produk Baru</a>
