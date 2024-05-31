@@ -8,16 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model
 {
     use HasFactory;
-    protected $table = 'role';
+    
+    protected $table = 'tbl_roles';
     protected $primaryKey = 'id_role';
     protected $guarded = [];
-    protected $casts = [
+    protected $dates = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
     
     public function user()
     {
-        return $this->hasOne(User::class, 'id_users');
+        return $this->hasOne(User::class, 'id_role', 'id_role');
     }
 }

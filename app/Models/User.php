@@ -4,20 +4,22 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    protected $primaryKey = 'id_users';
+    protected $table = 'tbl_users';
+    protected $primaryKey = 'id_user';
     protected $guarded = [];
 
     /**
@@ -35,8 +37,14 @@ class User extends Authenticatable
      *
      * @var array<string, string>
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
+    // protected $casts = [
+    //     'email_verified_at' => 'datetime',
+    // ];
+
+    protected $dates = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'deleted_at' => 'datetime',
     ];
 
     public function role()
@@ -44,18 +52,18 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class, 'id_role', 'id_role');
     }
 
-    public function keranjang()
+    public function shoppng_cart()
     {
-        return $this->hasMany(Keranjang::class, 'id_users', 'id_users');
+        return $this->hasMany(ShoppingCart::class, 'id_user', 'id_user');
     }
 
-    public function ulasan()
+    public function review()
     {
-        return $this->hasMany(Ulasan::class, 'id_users', 'id_users');
+        return $this->hasMany(Review::class, 'id_user', 'id_user');
     }
 
-    public function transaksi()
+    public function transaction()
     {
-        return $this->hasMany(Transaksi::class, 'id_transaksi', 'id_transaksi');
+        return $this->hasMany(Transaction::class, 'id_user', 'id_user');
     }
 }

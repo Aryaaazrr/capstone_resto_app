@@ -21,29 +21,31 @@ class DatabaseSeeder extends Seeder
         Schema::enableForeignKeyConstraints();
 
         $data = [
-            'Admin', 'Customer'
+            'SuperAdmin', 'Admin', 'Customer'
         ];
 
         foreach ($data as $value) {
             Role::insert([
-                'nama_role' => $value
+                'name' => $value
             ]);
         }
 
         User::factory()->create([
-            'name'          => 'admin',
-            'email'          => 'admin@admin.com',
-            'email_verified_at'          => now(),
-            'password'          => Hash::make('admin'),
+            'username'          => 'superadmin',
+            'password'          => Hash::make('superadmin'),
             'id_role'          => 1,
         ]);
 
         User::factory()->create([
-            'name'          => 'customer',
-            'email'          => 'customer@customer.com',
-            'email_verified_at'          => now(),
-            'password'          => Hash::make('customer'),
+            'username'          => 'admin',
+            'password'          => Hash::make('admin'),
             'id_role'          => 2,
+        ]);
+
+        User::factory()->create([
+            'username'          => 'customer',
+            'password'          => Hash::make('customer'),
+            'id_role'          => 3,
         ]);
 
         \App\Models\User::factory(10)->create();
