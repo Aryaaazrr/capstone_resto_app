@@ -1,8 +1,12 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HistoryTransactionController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,28 +44,30 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
-    Route::middleware('superadmin')->prefix('superadmin')->group(function () {
-        Route::get('dashboard', [DashboardController::class, 'index'])->name('superadmin.dashboard.index');
-
-        Route::get('produk', [ProductController::class, 'index'])->name('superadmin.produk.index');
-        Route::get('produk/create', [ProductController::class, 'create'])->name('superadmin.produk.create');
-        Route::post('produk', [ProductController::class, 'store'])->name('superadmin.produk.store');
-        Route::get('produk/{produk}', [ProductController::class, 'show'])->name('superadmin.produk.show');
-        Route::get('produk/{produk}/edit', [ProductController::class, 'edit'])->name('superadmin.produk.edit');
-        Route::put('produk/{produk}', [ProductController::class, 'update'])->name('superadmin.produk.update');
-        Route::delete('produk/{produk}', [ProductController::class, 'destroy'])->name('superadmin.produk.destroy');
-    });
-
     Route::middleware('admin')->prefix('admin')->group(function () {
         Route::get('dashboard', [DashboardController::class, 'index'])->name('admin.dashboard.index');
 
-        Route::get('produk', [ProductController::class, 'index'])->name('admin.produk.index');
-        Route::get('produk/create', [ProductController::class, 'create'])->name('admin.produk.create');
-        Route::post('produk', [ProductController::class, 'store'])->name('admin.produk.store');
-        Route::get('produk/{produk}', [ProductController::class, 'show'])->name('admin.produk.show');
-        Route::get('produk/{produk}/edit', [ProductController::class, 'edit'])->name('admin.produk.edit');
-        Route::put('produk/{produk}', [ProductController::class, 'update'])->name('admin.produk.update');
-        Route::delete('produk/{produk}', [ProductController::class, 'destroy'])->name('admin.produk.destroy');
+        Route::get('product', [ProductController::class, 'index'])->name('admin.product.index');
+        Route::get('product/create', [ProductController::class, 'create'])->name('admin.product.create');
+        Route::post('product', [ProductController::class, 'store'])->name('admin.product.store');
+        Route::get('product/{product}', [ProductController::class, 'show'])->name('admin.product.show');
+        Route::get('product/{product}/edit', [ProductController::class, 'edit'])->name('admin.product.edit');
+        Route::put('product/{product}', [ProductController::class, 'update'])->name('admin.product.update');
+        Route::delete('product/{product}', [ProductController::class, 'destroy'])->name('admin.produk.destroy');
+
+        Route::get('category', [CategoryController::class, 'index'])->name('admin.category.index');
+        Route::post('category', [CategoryController::class, 'store'])->name('admin.category.store');
+        Route::get('category/trash', [CategoryController::class, 'show'])->name('admin.category.show');
+        Route::put('category/update', [CategoryController::class, 'update'])->name('admin.category.update');
+        Route::delete('category/{id}', [CategoryController::class, 'destroy'])->name('admin.category.destroy');
+        Route::delete('category/force-delete/{id}', [CategoryController::class, 'forceDelete'])->name('admin.category.forceDelete');
+        Route::post('category/restore/{id}', [CategoryController::class, 'restore'])->name('admin.category.restore');
+
+        Route::get('transaction', [TransactionController::class, 'index'])->name('admin.transaction.index');
+
+        Route::get('history', [HistoryTransactionController::class, 'index'])->name('admin.history.index');
+
+        Route::get('profile', [ProfileController::class, 'index'])->name('admin.profile.index');
     });
 
     Route::middleware('customer')->group(function () {

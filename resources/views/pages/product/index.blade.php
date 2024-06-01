@@ -19,7 +19,7 @@
                         <div class="d-flex justify-content-between">
                             <h5 class="card-title">Daftar Tugas</h5>
                             <div class="h-10 d-flex align-items-center">
-                                <a href="{{ route('admin.produk.create') }}" class="btn btn-primary">Add Product</a>
+                                <a href="{{ route('admin.product.create') }}" class="btn btn-primary">Add Product</a>
                             </div>
                         </div>
                         <div class="tab-content pt-2" id="borderedTabJustifiedContent">
@@ -49,11 +49,11 @@
                                                 <td>Rp. {{ $produk->harga_produk }}</td>
                                                 <td>{{ $produk->kategori->nama_kategori }}</td>
                                                 <td>
-                                                    <a href="{{ route('admin.produk.show', $produk->id_produk) }}"
+                                                    <a href="{{ route('admin.prduct.show', $produk->id_produk) }}"
                                                         class="btn btn-info btn-sm">Tampilkan</a>
-                                                    <a href="{{ route('admin.produk.edit', $produk->id_produk) }}"
+                                                    <a href="{{ route('admin.prduct.edit', $produk->id_produk) }}"
                                                         class="btn btn-warning btn-sm">Edit</a>
-                                                    <form action="{{ route('admin.produk.destroy', $produk->id_produk) }}"
+                                                    <form action="{{ route('admin.product.destroy', $produk->id_produk) }}"
                                                         method="POST" class="d-inline">
                                                         @csrf
                                                         @method('DELETE')

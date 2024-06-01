@@ -49,7 +49,7 @@ h6 {
 
 @media (max-width: 1199px) {
   #main {
-    padding: 20px;
+      padding: 20px;
   }
 }
 
@@ -153,30 +153,30 @@ h6 {
 
 @media (min-width: 768px) {
   .dropdown-menu-arrow::before {
-    content: "";
-    width: 13px;
-    height: 13px;
-    background: #fff;
-    position: absolute;
-    top: -7px;
-    right: 20px;
-    transform: rotate(45deg);
-    border-top: 1px solid #eaedf1;
-    border-left: 1px solid #eaedf1;
+      content: "";
+      width: 13px;
+      height: 13px;
+      background: #fff;
+      position: absolute;
+      top: -7px;
+      right: 20px;
+      transform: rotate(45deg);
+      border-top: 1px solid #eaedf1;
+      border-left: 1px solid #eaedf1;
   }
 }
 
 @keyframes dropdown-animate {
   0% {
-    opacity: 0;
+      opacity: 0;
   }
 
   100% {
-    opacity: 1;
+      opacity: 1;
   }
 
   0% {
-    opacity: 0;
+      opacity: 0;
   }
 }
 
@@ -360,7 +360,7 @@ h6 {
 
 @media (min-width: 1200px) {
   .logo {
-    width: 280px;
+      width: 280px;
   }
 }
 
@@ -401,23 +401,23 @@ h6 {
 
 @media (max-width: 1199px) {
   .header .search-bar {
-    position: fixed;
-    top: 50px;
-    left: 0;
-    right: 0;
-    padding: 20px;
-    box-shadow: 0px 0px 15px 0px rgba(1, 41, 112, 0.1);
-    background: white;
-    z-index: 9999;
-    transition: 0.3s;
-    visibility: hidden;
-    opacity: 0;
+      position: fixed;
+      top: 50px;
+      left: 0;
+      right: 0;
+      padding: 20px;
+      box-shadow: 0px 0px 15px 0px rgba(1, 41, 112, 0.1);
+      background: white;
+      z-index: 9999;
+      transition: 0.3s;
+      visibility: hidden;
+      opacity: 0;
   }
 
   .header .search-bar-show {
-    top: 60px;
-    visibility: visible;
-    opacity: 1;
+      top: 60px;
+      visibility: visible;
+      opacity: 1;
   }
 }
 
@@ -461,7 +461,7 @@ h6 {
   list-style: none;
 }
 
-.header-nav>ul {
+.header-nav > ul {
   margin: 0;
   padding: 0;
 }
@@ -615,7 +615,7 @@ h6 {
 
 @media (max-width: 1199px) {
   .sidebar {
-    left: -300px;
+      left: -300px;
   }
 }
 
@@ -630,28 +630,26 @@ h6 {
 }
 
 @media (min-width: 1200px) {
-
   #main,
   #footer {
-    margin-left: 300px;
+      margin-left: 300px;
   }
 }
 
 @media (max-width: 1199px) {
   .toggle-sidebar .sidebar {
-    left: 0;
+      left: 0;
   }
 }
 
 @media (min-width: 1200px) {
-
   .toggle-sidebar #main,
   .toggle-sidebar #footer {
-    margin-left: 0;
+      margin-left: 0;
   }
 
   .toggle-sidebar .sidebar {
-    left: -300px;
+      left: -300px;
   }
 }
 
@@ -684,9 +682,9 @@ h6 {
   align-items: center;
   font-size: 15px;
   font-weight: 600;
-  color: #4154f1;
+  color: #f4f4f4;
   transition: 0.3;
-  background: #f6f9ff;
+  background: #1a73e8;
   padding: 10px 15px;
   border-radius: 4px;
 }
@@ -694,7 +692,7 @@ h6 {
 .sidebar-nav .nav-link i {
   font-size: 16px;
   margin-right: 10px;
-  color: #4154f1;
+  color: #f4f4f4;
 }
 
 .sidebar-nav .nav-link.collapsed {
@@ -707,12 +705,15 @@ h6 {
 }
 
 .sidebar-nav .nav-link:hover {
-  color: #4154f1;
-  background: #f6f9ff;
+color: #f4f4f4;
+background: #1a73e8;
+box-shadow: 0 3px 3px 0 rgba(26, 115, 232, 0.15),
+    0 3px 1px -2px rgba(26, 115, 232, 0.2),
+    0 1px 5px 0 rgba(26, 115, 232, 0.15);
 }
 
 .sidebar-nav .nav-link:hover i {
-  color: #4154f1;
+  color: #f4f4f4;
 }
 
 .sidebar-nav .nav-link .bi-chevron-down {
@@ -883,7 +884,7 @@ h6 {
 }
 
 /* News & Updates */
-.dashboard .news .post-item+.post-item {
+.dashboard .news .post-item + .post-item {
   margin-top: 15px;
 }
 
@@ -1149,7 +1150,7 @@ h6 {
   padding: 12px 15px;
 }
 
-.contact .php-email-form button[type=submit] {
+.contact .php-email-form button[type="submit"] {
   background: #4154f1;
   border: 0;
   padding: 10px 30px;
@@ -1158,17 +1159,17 @@ h6 {
   border-radius: 4px;
 }
 
-.contact .php-email-form button[type=submit]:hover {
+.contact .php-email-form button[type="submit"]:hover {
   background: #5969f3;
 }
 
 @keyframes animate-loading {
   0% {
-    transform: rotate(0deg);
+      transform: rotate(0deg);
   }
 
   100% {
-    transform: rotate(360deg);
+      transform: rotate(360deg);
   }
 }
 
@@ -1206,7 +1207,7 @@ h6 {
 
 @media (min-width: 992px) {
   .error-404 img {
-    max-width: 50%;
+      max-width: 50%;
   }
 }
 

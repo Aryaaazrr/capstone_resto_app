@@ -17,11 +17,7 @@ class Customer
     public function handle(Request $request, Closure $next): Response
     {
         if (Auth::user()->id_role != '3') {
-            if (Auth::user()->id_role == '1') {
-                return redirect('superadmin/dashboard');
-            } else {
-                return redirect('admin/dashboard');
-            }
+            return redirect('admin/dashboard');
         }
 
         return $next($request);

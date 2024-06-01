@@ -16,12 +16,8 @@ class Admin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::user()->id_role != '2') {
-            if (Auth::user()->id_role == '1') {
-                return redirect('superadmin/dashboard');
-            } else {
-                return redirect('dashboard');
-            }
+        if (Auth::user()->id_role != '1') {
+            return redirect('dashboard');
         }
 
         return $next($request);
