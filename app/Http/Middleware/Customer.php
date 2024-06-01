@@ -16,7 +16,7 @@ class Customer
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::user()->id_role != '3') {
+        if (Auth::user()->id_role != '2') {
             return redirect('admin/dashboard');
         }
 
