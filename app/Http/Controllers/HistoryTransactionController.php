@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+<<<<<<< Updated upstream
+=======
+use App\Http\Controllers\Controller;
+>>>>>>> Stashed changes
 use Illuminate\Http\Request;
 
 class HistoryTransactionController extends Controller
 {
+<<<<<<< Updated upstream
     /**
      * Display a listing of the resource.
      */
@@ -61,4 +66,7 @@ class HistoryTransactionController extends Controller
     {
         //
     }
+=======
+    //
+>>>>>>> Stashed changes
 }
