@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
+use App\Models\Subcategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,7 +26,10 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        //
+        $subcategory = Subcategory::where('name', 'Menu Paket Reservasi')->first();
+        $product = Product::where('id_subcategory', $subcategory->id_subcategory)->with('subcategory')->get();
+
+        return view('pages.home.reservation', ['product' => $product]);
     }
 
     /**

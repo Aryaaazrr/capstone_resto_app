@@ -10,6 +10,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubcategoryController;
 use App\Http\Controllers\TransactionController;
+use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,9 +37,30 @@ Route::middleware('guest')->group(function () {
 
     Route::get('auth/google', [AuthController::class, 'google'])->name('google-login');
     Route::get('auth/google/callback', [AuthController::class, 'handleGoogle'])->name('google-callback');
+
+    Route::get('verify', [AuthController::class, 'verify'])->name('verify');
+    Route::post('verify', [AuthController::class, 'verifyProcess'])->name('verify.process');
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('/email/verify', function () {
+        return view('auth.verify-email');
+    })->name('verification.notice');
+
+    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+        $request->fulfill();
+
+        return redirect('dashboard');
+    })->middleware('signed')->name('verification.verify');
+
+    Route::post('/email/verification-notification', function (Request $request) {
+        $request->user()->sendEmailVerificationNotification();
+
+        return back()->with('message', 'Verification link sent!');
+    })->middleware('throttle:6,1')->name('verification.send');
+});
+
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::middleware('admin')->prefix('admin')->group(function () {

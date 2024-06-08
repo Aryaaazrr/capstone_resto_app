@@ -2,65 +2,132 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Produk;
 use App\Models\Kategori;
 use App\Models\Product;
+use App\Models\Subcategory;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\DataTables;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $produks = Product::with('category')->get();
-        return view('pages.product.index', compact('produks'));
-    }
+        $product = Product::with('subcategory')->get();
+        $subcategory = Subcategory::all();
 
-    public function create()
-    {
-        $kategoris = Kategori::all();
-        return view('pages.product.create', compact('kategoris'));
+        if ($request->ajax()) {
+            $rowData = [];
+
+            foreach ($product as $row) {
+                $subcategory = $row->subcategory;
+
+                $rowData[] = [
+                    'id_product' => $row->id_product,
+                    'image' => $row->image,
+                    'name' => $row->name,
+                    'description' => $row->description,
+                    'price' => $row->price,
+                    'subcategory' => $subcategory->name,
+                ];
+            }
+            return DataTables::of($rowData)->toJson();
+        }
+
+        return view('pages.product.index', ['subcategory' => $subcategory]);
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'id_kategori' => 'required',
-            'nama_produk' => 'required',
-            'deskripsi_produk' => 'required',
-            'harga_produk' => 'required|numeric',
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'subcategory' => 'required|integer|exists:tbl_subcategories,id_subcategory',
+            'price' => 'required|numeric|min:0',
+            'description' => 'required|string',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
 
-        Produk::create($request->all());
-        return redirect()->route('product.index')
-            ->with('success', 'Produk berhasil dibuat.');
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        try {
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imageName = time() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('uploads/menu'), $imageName);
+            }
+
+            $category = new Product();
+            $category->id_subcategory = $request->subcategory;
+            $category->name = $request->name;
+            $category->image = $imageName;
+            $category->description = $request->description;
+            $category->price = $request->price;
+            $category->save();
+
+            return redirect()->route('admin.product.index')->with('success', 'Successfully added a new product.');
+        } catch (Exception $e) {
+            return back()->withInput()->withErrors(['error' => 'Failed to add new product. Please try again.']);
+        }
     }
 
-    public function show(Produk $produk)
+    public function show(Product $produk)
     {
         return view('pages.product.show', compact('produk'));
     }
 
-    public function edit(Produk $produk)
+    public function update(Request $request)
     {
-        $kategoris = Kategori::all();
-        return view('pages.product.edit', compact('produk', 'kategoris'));
-    }
+        $id = $request->id_product;
+        $product = Product::find($id);
 
-    public function update(Request $request, Produk $produk)
-    {
-        $request->validate([
-            'id_kategori' => 'required',
-            'nama_produk' => 'required',
-            'deskripsi_produk' => 'required',
-            'harga_produk' => 'required|numeric',
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'subcategory' => 'required|integer|exists:tbl_subcategories,id_subcategory',
+            'price' => 'required|numeric|min:0',
+            'description' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
 
-        $produk->update($request->all());
-        return redirect()->route('product.index')
-            ->with('success', 'Produk berhasil diperbarui.');
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        try {
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imageName = time() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('uploads/menu'), $imageName);
+
+                if (file_exists(public_path('uploads/menu/' . $product->image))) {
+                    unlink(public_path('uploads/menu/' . $product->image));
+                }
+
+                $product->image = $imageName;
+            }
+
+            $product->id_subcategory = $request->subcategory;
+            $product->name = $request->name;
+            $product->description = $request->description;
+            $product->price = $request->price;
+            $product->save();
+
+            return redirect()->route('admin.product.index')->with('success', 'Successfully updated the product.');
+        } catch (Exception $e) {
+            return back()->withInput()->withErrors(['error' => 'Failed to update the product. Please try again.']);
+        }
     }
 
-    public function destroy(Produk $produk)
+    public function destroy(Product $produk)
     {
         $produk->delete();
         return redirect()->route('product.index')

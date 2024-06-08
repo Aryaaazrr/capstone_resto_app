@@ -18,10 +18,10 @@ class Product extends Model
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
     ];
-    
-    public function category()
+
+    public function subcategory()
     {
-        return $this->belongsTo(Category::class, 'id_category', 'id_category');
+        return $this->belongsTo(Subcategory::class, 'id_subcategory', 'id_subcategory');
     }
 
     public function shopping_cart()

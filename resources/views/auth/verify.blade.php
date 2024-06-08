@@ -1,6 +1,6 @@
 @extends('layouts.home.guest')
 
-@section('title', 'Verify Success')
+@section('title', 'Verify')
 
 @section('content')
     <main>
@@ -16,15 +16,26 @@
                                     </div>
 
                                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                        Verify the email was sent successfully
+                                        Enter your email for verification
                                         <button type="button" class="btn-close" data-bs-dismiss="alert"
                                             aria-label="Close"></button>
                                     </div>
+                                    {!! session('msg') !!}
+                                    <form action="{{ route('verify.process') }}" method="POST"
+                                        class="row g-3 needs-validation pt-4" novalidate>
+                                        @csrf
+                                        <div class="col-12">
+                                            <div class="input-group has-validation">
+                                                <input type="email" name="email" class="form-control " id="email"
+                                                    placeholder="Email" required>
+                                                <div class="invalid-feedback">Please enter your email!</div>
+                                            </div>
+                                        </div>
 
-                                    <div class="col-12 mt-2">
-                                        <a class="btn btn-light text-success w-100" href="{{ route('login') }}">
-                                            Kembali</a>
-                                    </div>
+                                        <div class="col-12 mt-4">
+                                            <button class="btn btn-success w-100" type="submit">Send Email</button>
+                                        </div>
+                                    </form>
 
                                 </div>
                             </div>

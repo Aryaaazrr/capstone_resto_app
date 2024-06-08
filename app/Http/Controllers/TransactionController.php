@@ -2,15 +2,10 @@
 
 namespace App\Http\Controllers;
 
-<<<<<<< Updated upstream
-=======
-use App\Http\Controllers\Controller;
->>>>>>> Stashed changes
 use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
-<<<<<<< Updated upstream
     /**
      * Display a listing of the resource.
      */
@@ -67,7 +62,3 @@ class TransactionController extends Controller
         //
     }
 }
-=======
-    //
-}
->>>>>>> Stashed changes

@@ -4,7 +4,9 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Category;
 use App\Models\Role;
+use App\Models\Subcategory;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -45,5 +47,29 @@ class DatabaseSeeder extends Seeder
         ]);
 
         \App\Models\User::factory(10)->create();
+
+        $types = ['Menu Makanan', 'Menu Minuman', 'Menu Paket Raminten', 'Kaos Raminten'];
+        foreach ($types as $type) {
+            Category::create([
+                'name' => $type
+            ]);
+        }
+
+        $bobotKriteriaData = [
+            [1, 'Menu Utama'], [2, 'Juss & Smoothies'], [3, 'Menu Paket Reguler'],
+            [1, 'Menu Dessert'], [2, 'Dingin Menyegarkan'], [3, 'Menu Paket Reservasi'],
+            [1, 'Menu Lauk'], [2, 'Panas Menghangatkan'], [3, 'Menu Paket Reservasi'],
+            [1, 'Menu Snack'], [2, 'Hot & Cold'],
+        ];
+
+        foreach ($bobotKriteriaData as $bobot) {
+            $id_category = $bobot[0];
+            $name = $bobot[1];
+
+            Subcategory::create([
+                'id_category' => $id_category,
+                'name' => $name,
+            ]);
+        }
     }
 }

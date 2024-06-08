@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Services\GoogleService;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -93,42 +94,34 @@ class AuthController extends Controller
 
     public function registerProcess(Request $request)
     {
-        DB::beginTransaction();
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:255',
+            'email' => 'required|email|unique:tbl_users,email',
+            'password' => 'required|min:8|max:255',
+            'confirm-password' => 'required|same:password',
+        ]);
 
-        try {
-            $validator = Validator::make($request->all(), [
-                'username' => 'required|max:255|regex:/^\S*$/u',
-                'password' => 'required|min:8|max:255',
-                'confirm-password' => 'required|same:password',
-            ]);
-
-            if ($validator->fails()) {
-                return redirect('register')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            $user = User::create([
-                'username' => $request->username,
-                'password' => Hash::make($request->password),
-                'id_role' => 2
-            ]);
-
-            DB::commit();
-
-            return redirect('/')->with('msg', '<div class="alert alert-success alert-dismissible text-white" role="alert">
-            <span class="text-sm">Daftar akun berhasil.</span>
-            <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return back()->withInput()->withErrors(['email' => 'Daftar akun gagal. Silakan coba lagi.']);
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
         }
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'id_role' => 2
+        ]);
+
+        event(new Registered($user));
+
+        Auth::login($user);
+
+        return redirect()->route('verification.verify');
     }
 
-    public function login(Request $request)
+    public function login()
     {
         return view('auth.login');
     }
@@ -144,6 +137,14 @@ class AuthController extends Controller
 
         if ($cekDataPengguna) {
             if (Auth::attempt($credentials)) {
+                if (Auth::user()->email_verified_at == '') {
+                    Auth::logout();
+                    $request->session()->invalidate();
+                    $request->session()->regenerateToken();
+
+                    return redirect('verify');
+                }
+
                 $request->session()->regenerate();
 
                 if (Auth::user()->id_role == '1') {
@@ -167,6 +168,11 @@ class AuthController extends Controller
         <button type="button" class="btn-close text-lg py-3" data-bs-dismiss="alert" aria-label="Close">    
         </button>
         </div>');
+    }
+
+    public function verify()
+    {
+        return view('auth.verify');
     }
 
     public function logout(Request $request)

@@ -16,10 +16,10 @@ return new class extends Migration
             $table->string('google_id')->nullable()->unique();
             $table->string('google_token')->nullable();
             $table->string('google_refresh_token')->nullable();
-            $table->string('name')->unique();
+            $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('email_verified_at');
+            $table->string('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->timestamp('google_token_expiry')->nullable();

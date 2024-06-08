@@ -20,7 +20,7 @@
                                         @csrf
                                         <div class="col-12">
                                             <div class="input-group has-validation">
-                                                <input type="text" name="email" class="form-control " id="email"
+                                                <input type="email" name="email" class="form-control " id="email"
                                                     placeholder="Email" required>
                                                 <div class="invalid-feedback">Please enter your email!</div>
                                             </div>
