@@ -58,7 +58,7 @@ class DatabaseSeeder extends Seeder
         $bobotKriteriaData = [
             [1, 'Menu Utama'], [2, 'Juss & Smoothies'], [3, 'Menu Paket Reguler'],
             [1, 'Menu Dessert'], [2, 'Dingin Menyegarkan'], [3, 'Menu Paket Reservasi'],
-            [1, 'Menu Lauk'], [2, 'Panas Menghangatkan'], [3, 'Menu Paket Reservasi'],
+            [1, 'Menu Lauk'], [2, 'Panas Menghangatkan'],
             [1, 'Menu Snack'], [2, 'Hot & Cold'],
         ];
 
