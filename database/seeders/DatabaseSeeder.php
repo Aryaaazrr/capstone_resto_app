@@ -29,15 +29,17 @@ class DatabaseSeeder extends Seeder
                 'name' => $value
             ]);
         }
-        
+
         User::factory()->create([
-            'username'          => 'admin',
+            'name'          => 'admin',
+            'email'          => 'admin@gmail.com',
             'password'          => Hash::make('admin'),
             'id_role'          => 1,
         ]);
 
         User::factory()->create([
-            'username'          => 'customer',
+            'name'          => 'customer',
+            'email'          => 'customer@gmail.com',
             'password'          => Hash::make('customer'),
             'id_role'          => 2,
         ]);

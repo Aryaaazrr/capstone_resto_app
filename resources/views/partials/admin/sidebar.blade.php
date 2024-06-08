@@ -10,18 +10,32 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="@if (request()->is('admin/product')) nav-link @else nav-link collapsed @endif"
-                href="{{ route('admin.product.index') }}">
-                <i class="bi bi-box"></i>
-                <span>Product</span>
+            <a class="nav-link collapsed" data-bs-target="#menu" data-bs-toggle="collapse" href="">
+                <i class="bi bi-journal-text"></i><span>Menu</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-        </li>
-        <li class="nav-item">
-            <a class="@if (request()->is('admin/category')) nav-link @else nav-link collapsed @endif"
-                href="{{ route('admin.category.index') }}">
-                <i class="bi bi-list-check"></i>
-                <span>Category</span>
-            </a>
+            <ul id="menu" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a class="@if (request()->is('admin/category')) nav-link @else nav-link collapsed @endif"
+                        href="{{ route('admin.category.index') }}">
+                        <i class="bi bi-circle"></i>
+                        <span>Category</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="@if (request()->is('admin/subcategory')) nav-link @else nav-link collapsed @endif"
+                        href="{{ route('admin.subcategory.index') }}">
+                        <i class="bi bi-circle"></i>
+                        <span>Subcategory</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="@if (request()->is('admin/product')) nav-link @else nav-link collapsed @endif"
+                        href="{{ route('admin.product.index') }}">
+                        <i class="bi bi-circle"></i>
+                        <span>Product</span>
+                    </a>
+                </li>
+            </ul>
         </li>
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="">

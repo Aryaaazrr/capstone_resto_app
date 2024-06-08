@@ -13,10 +13,16 @@ return new class extends Migration
     {
         Schema::create('tbl_users', function (Blueprint $table) {
             $table->id('id_user');
-            $table->string('username');
+            $table->string('google_id')->nullable()->unique();
+            $table->string('google_token')->nullable();
+            $table->string('google_refresh_token')->nullable();
+            $table->string('name')->unique();
+            $table->string('email')->unique();
             $table->string('password');
+            $table->string('email_verified_at');
             $table->rememberToken();
             $table->timestamps();
+            $table->timestamp('google_token_expiry')->nullable();
             $table->softDeletes();
         });
     }

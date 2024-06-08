@@ -13,9 +13,8 @@ return new class extends Migration
     {
         Schema::create('tbl_products', function (Blueprint $table) {
             $table->id('id_product');
-            $table->unsignedBigInteger('id_category')->required();
-            $table->foreign('id_category')->references('id_category')->on('tbl_categories')->onUpdate('cascade')->onDelete('cascade');
             $table->string('name')->notNull();
+            $table->string('image')->notNull();
             $table->text('description')->notNull();
             $table->decimal('price')->notNull();
             $table->timestamps();

@@ -17,7 +17,9 @@ return new class extends Migration
             $table->foreign('id_user')->references('id_user')->on('tbl_users')->onUpdate('cascade')->onDelete('cascade');
             $table->string('no_receipt')->notNull();
             $table->decimal('grand_total')->notNull();
-            $table->enum('status', ['Pending', 'Process', 'On Delivery', 'Completed', 'Cancel']);
+            $table->enum('status_transaction', ['Pending', 'Process', 'Completed', 'Cancel']);
+            $table->enum('status_payment', ['Pending', 'Paid', 'Failed', 'Canceled'])->default('Pending');
+            $table->string('token_payment');
             $table->timestamps();
             $table->softDeletes();
         });

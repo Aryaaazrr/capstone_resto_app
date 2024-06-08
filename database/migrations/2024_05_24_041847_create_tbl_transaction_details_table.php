@@ -18,7 +18,8 @@ return new class extends Migration
             $table->unsignedBigInteger('id_product')->required();
             $table->foreign('id_product')->references('id_product')->on('tbl_products')->onUpdate('cascade')->onDelete('cascade');
             $table->integer('quantity')->notNull();
-            $table->decimal('subtotal')->notNull();
+            $table->decimal('price')->notNull();
+            $table->decimal('total')->notNull();
             $table->timestamps();
             $table->softDeletes();
         });

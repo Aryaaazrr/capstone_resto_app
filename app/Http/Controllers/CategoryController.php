@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-<<<<<<< Updated upstream
 use App\Models\Category;
 use Exception;
 use Illuminate\Http\Request;
@@ -132,12 +131,3 @@ class CategoryController extends Controller
         return response()->json(['message' => 'Data tidak ditemukan.'], 404);
     }
 }
-=======
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-
-class CategoryController extends Controller
-{
-    //
-}
->>>>>>> Stashed changes
