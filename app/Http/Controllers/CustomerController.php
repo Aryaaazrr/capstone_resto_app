@@ -50,7 +50,7 @@ class CustomerController extends Controller
 
     public function store(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
         $validator = Validator::make($request->all(), [
             'name' => 'required|min:4',
             'email' => 'required|email',
@@ -75,22 +75,23 @@ class CustomerController extends Controller
             $receipt = 'TR-' . strtoupper(Str::random(8)) . '-' . time();
 
             $transaction = new Transaction();
+            $transaction->id_user = Auth::id();
             $transaction->no_receipt = $receipt;
             $transaction->grand_total = $grandTotal;
 
             if ($transaction->save()) {
                 foreach ($request->all() as $key => $value) {
-                    if (str_contains($key, 'paket_') && $value) {
-                        $productId = str_replace('paket_', '', $key);
-                        $qty = $request->input('qty_' . $productId);
+                    if (Str::startsWith($key, 'qty_') && !is_null($value) && $value > 0) {
+                        $productId = substr($key, 4);
+                        dd($productId);
                         $product = Product::find($productId);
                         if ($product) {
                             $detail_transaction = new TransactionDetails();
                             $detail_transaction->id_transaction = $transaction->id_transaction;
                             $detail_transaction->id_product = $productId;
-                            $detail_transaction->quantity = $qty;
+                            // $detail_transaction->quantity = $qty;
                             $detail_transaction->price = $product->price;
-                            $detail_transaction->total = $product->price * $qty;
+                            // $detail_transaction->total = $product->price * $qty;
                             if (!$detail_transaction->save()) {
                                 throw new Exception("Terjadi Kesalahan, Gagal mendaftar reservasi");
                             }
