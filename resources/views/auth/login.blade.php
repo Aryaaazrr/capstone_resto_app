@@ -12,7 +12,7 @@
                             <div class="card mb-3">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-center py-4">
-                                        <img src="{{ asset('assets/images/logo/logo.jpg') }}" alt="logo">
+                                        <img src="{{ asset('home/assets/img/logo/logo.jpg') }}" alt="logo">
                                     </div>
                                     {!! session('msg') !!}
                                     <form action="{{ route('login.process') }}" method="POST"

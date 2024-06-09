@@ -10,7 +10,13 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#menu" data-bs-toggle="collapse" href="">
+            <a class="@if (request()->is('admin/category') ||
+                    Str::contains(request()->url(), 'admin/category/trash') ||
+                    Str::contains(request()->url(), 'admin/subcategory') ||
+                    Str::contains(request()->url(), 'admin/subcategory/trash') ||
+                    Str::contains(request()->url(), 'admin/product') ||
+                    Str::contains(request()->url(), 'admin/product/trash')) nav-link @else nav-link collapsed @endif" data-bs-target="#menu"
+                data-bs-toggle="collapse" href="">
                 <i class="bi bi-journal-text"></i><span>Menu</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="menu" class="nav-content collapse " data-bs-parent="#sidebar-nav">
@@ -38,8 +44,9 @@
             </ul>
         </li>
         <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="">
-                <i class="bi bi-journal-text"></i><span>Transaction</span><i class="bi bi-chevron-down ms-auto"></i>
+            <a class="@if (request()->is('admin/transaction') || Str::contains(request()->url(), 'admin/history')) nav-link @else nav-link collapsed @endif"
+                data-bs-target="#forms-nav" data-bs-toggle="collapse" href="">
+                <i class="bi bi-card-checklist"></i><span>Transaction</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
