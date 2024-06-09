@@ -8,9 +8,12 @@ use App\Models\Transaction;
 use App\Models\TransactionDetails;
 use App\Models\User;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Midtrans\Config;
 use Midtrans\Snap;
 
@@ -47,50 +50,58 @@ class CustomerController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request->all());/
-        // Validasi input
-        // $request->validate([
-        //     'name' => 'required|string|max:255',
-        //     'email' => 'required|email',
-        //     'phone' => 'required|string|min:9',
-        //     'date' => 'required|date',
-        //     'time' => 'required',
-        //     'people' => 'required|integer',
-        // ]);
+        dd($request->all());
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|min:4',
+            'email' => 'required|email',
+            'phone' => 'required|min:9',
+            'date' => 'required|date',
+            'time' => 'required',
+            'people' => 'required|integer|min:1',
+            'paket_*' => 'sometimes|required|integer',
+            'qty_*' => 'sometimes|required|integer|min:10',
+        ]);
 
-        // Simpan reservasi
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         DB::beginTransaction();
 
         try {
-            // Hitung total transaksi
-            // $grandTotal = $this->calculateTotal($request->all());
+            $grandTotal = $this->calculateTotal($request->all());
+            $receipt = 'TR-' . strtoupper(Str::random(8)) . '-' . time();
 
-            // // Simpan transaksi
-            // $transaction = Transaction::create([
-            //     'id_user' => auth()->id(),
-            //     'no_receipt' => 'T' . date('YmdHis'), // Format nomor transaksi yang benar
-            //     'grand_total' => $grandTotal,
-            //     'token_payment' => null, // Inisialisasi dengan null
-            //     'url_payment' => null, // Inisialisasi dengan null
-            // ]);
+            $transaction = new Transaction();
+            $transaction->no_receipt = $receipt;
+            $transaction->grand_total = $grandTotal;
 
-            // Simpan detail transaksi
-            // foreach ($request->all() as $key => $value) {
-            //     if (str_contains($key, 'paket_') && $value) {
-            //         $productId = str_replace('paket_', '', $key);
-            //         $qty = $request->input('qty_' . $productId);
-            //         $product = Product::find($productId);
-            //         if ($product) {
-            //             TransactionDetails::create([
-            //                 'id_transaction' => $transaction->id_transaction,
-            //                 'id_product' => $productId,
-            //                 'quantity' => $qty,
-            //                 'price' => $product->price,
-            //                 'total' => $product->price * $qty,
-            //             ]);
-            //         }
-            //     }
-            // }
+            if ($transaction->save()) {
+                foreach ($request->all() as $key => $value) {
+                    if (str_contains($key, 'paket_') && $value) {
+                        $productId = str_replace('paket_', '', $key);
+                        $qty = $request->input('qty_' . $productId);
+                        $product = Product::find($productId);
+                        if ($product) {
+                            $detail_transaction = new TransactionDetails();
+                            $detail_transaction->id_transaction = $transaction->id_transaction;
+                            $detail_transaction->id_product = $productId;
+                            $detail_transaction->quantity = $qty;
+                            $detail_transaction->price = $product->price;
+                            $detail_transaction->total = $product->price * $qty;
+                            if (!$detail_transaction->save()) {
+                                throw new Exception("Terjadi Kesalahan, Gagal mendaftar reservasi");
+                            }
+                        } else {
+                            throw new Exception("Terjadi Kesalahan, Product tidak ditemukan");
+                        }
+                    }
+                }
+            } else {
+                throw new Exception("Terjadi Kesalahan, Gagal membuat reservasi");
+            }
 
             // Konfigurasi Midtrans
             // Config::$serverKey = config('midtrans.server_key');

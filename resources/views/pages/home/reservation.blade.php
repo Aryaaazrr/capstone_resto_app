@@ -142,35 +142,37 @@
                                     <input type="text" name="name" class="form-control" id="name"
                                         placeholder="Nama" data-rule="minlen:4"
                                         data-msg="Silakan masukkan setidaknya 4 karakter" value="{{ Auth::user()->name }}"
-                                        readonly>
+                                        readonly required>
                                     <div class="validate"></div>
                                 </div>
                                 <div class="col-lg-4 col-md-6 form-group mt-3 mt-md-0">
                                     <input type="email" class="form-control" name="email" id="email"
                                         placeholder="Email" data-rule="email" data-msg="Tolong masukkan email yang benar"
-                                        value="{{ Auth::user()->email }}" readonly>
+                                        value="{{ Auth::user()->email }}" readonly required>
                                     <div class="validate"></div>
                                 </div>
                                 <div class="col-lg-4 col-md-6 form-group mt-3 mt-md-0">
                                     <input type="text" class="form-control" name="phone" id="phone"
                                         placeholder="No. WhatsApp" data-rule="minlen:9"
-                                        data-msg="Silakan masukkan setidaknya 9 karakter">
+                                        data-msg="Silakan masukkan setidaknya 9 karakter" required>
                                     <div class="validate"></div>
                                 </div>
                                 <div class="col-lg-4 col-md-6 form-group mt-3">
                                     <input type="date" name="date" class="form-control" id="date"
-                                        placeholder="Date" data-rule="minlen:4" data-msg="Please enter at least 4 chars">
+                                        placeholder="Date" data-rule="minlen:4" data-msg="Please enter at least 4 chars"
+                                        required>
                                     <div class="validate"></div>
                                 </div>
                                 <div class="col-lg-4 col-md-6 form-group mt-3">
                                     <input type="time" class="form-control" name="time" id="time"
-                                        placeholder="Time" data-rule="minlen:4" data-msg="Please enter at least 4 chars">
+                                        placeholder="Time" data-rule="minlen:4" data-msg="Please enter at least 4 chars"
+                                        required>
                                     <div class="validate"></div>
                                 </div>
                                 <div class="col-lg-4 col-md-6 form-group mt-3">
                                     <input type="number" class="form-control" name="people" id="people"
-                                        placeholder="# of people" data-rule="minlen:1"
-                                        data-msg="Please enter at least 1 chars">
+                                        placeholder="# of people" min="1" data-rule="minlen:1"
+                                        data-msg="Please enter at least 1 chars" required>
                                     <div class="validate"></div>
                                 </div>
                             </div>
@@ -183,13 +185,13 @@
                             </div>
 
                         </div>
-                    </section><!-- End Book A Table Section -->
+                    </section>
                 </form>
 
             </div>
         </section>
 
-    </main><!-- End #main -->
+    </main>
 
     @if (session('success'))
         <script>

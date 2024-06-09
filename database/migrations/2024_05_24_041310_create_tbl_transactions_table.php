@@ -17,9 +17,14 @@ return new class extends Migration
             $table->foreign('id_user')->references('id_user')->on('tbl_users')->onUpdate('cascade')->onDelete('cascade');
             $table->string('no_receipt')->notNull();
             $table->decimal('grand_total')->notNull();
-            $table->enum('status_transaction', ['Pending', 'Process', 'Completed', 'Cancel']);
+            $table->string('no_telp')->notNull();
+            $table->date('reservation_date')->notNull();
+            $table->time('reservation_time')->notNull();
+            $table->integer('reservation_people')->notNull();
+            $table->text('reservation_message')->default('-');
+            $table->enum('status_transaction', ['Pending', 'Process', 'Completed', 'Cancel'])->default('Pending');
             $table->enum('status_payment', ['Pending', 'Paid', 'Failed', 'Canceled'])->default('Pending');
-            $table->string('token_payment');
+            $table->string('token_payment')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
