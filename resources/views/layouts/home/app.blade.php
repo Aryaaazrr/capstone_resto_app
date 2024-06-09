@@ -19,16 +19,16 @@
         rel="stylesheet">
 
     <!-- Vendor CSS Files -->
-    <link href="{{ asset('custom/assets/vendor/animate.css/animate.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('custom/assets/vendor/aos/aos.css') }}" rel="stylesheet">
-    <link href="{{ asset('custom/assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('custom/assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
-    <link href="{{ asset('custom/assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('custom/assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('custom/assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('home/assets/vendor/animate.css/animate.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('home/assets/vendor/aos/aos.css') }}" rel="stylesheet">
+    <link href="{{ asset('home/assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('home/assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+    <link href="{{ asset('home/assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('home/assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('home/assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
 
     <!-- Template Main CSS File -->
-    <link href="{{ asset('custom/assets/css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('home/assets/css/style.css') }}" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
@@ -44,15 +44,15 @@
             class="bi bi-arrow-up-short"></i></a>
 
     <!-- Vendor JS Files -->
-    <script src="{{ asset('custom/assets/vendor/aos/aos.js') }}"></script>
-    <script src="{{ asset('custom/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('custom/assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
-    <script src="{{ asset('custom/assets/vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
-    {{-- <script src="{{ asset('custom/assets/vendor/php-email-form/validate.js') }}"></script> --}}
-    <script src="{{ asset('custom/assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
+    <script src="{{ asset('home/assets/vendor/aos/aos.js') }}"></script>
+    <script src="{{ asset('home/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('home/assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
+    <script src="{{ asset('home/assets/vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
+    {{-- <script src="{{ asset('home/assets/vendor/php-email-form/validate.js') }}"></script> --}}
+    <script src="{{ asset('home/assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
 
     <!-- Template Main JS File -->
-    <script src="{{ asset('custom/assets/js/main.js') }}"></script>
+    <script src="{{ asset('home/assets/js/main.js') }}"></script>
 
 </body>
 

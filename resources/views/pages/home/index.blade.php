@@ -40,7 +40,7 @@
                 <div class="row">
                     <div class="col-lg-6 order-1 order-lg-2" data-aos="zoom-in" data-aos-delay="100">
                         <div class="about-img">
-                            <img src="{{ asset('custom/assets/img/tentang.jpg') }}" alt="">
+                            <img src="{{ asset('home/assets/img/tentang.jpg') }}" alt="">
                         </div>
                     </div>
                     <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content">
@@ -78,7 +78,7 @@
 
                     <div class="col-lg-4 col-md-6">
                         <div class="member" data-aos="zoom-in" data-aos-delay="100">
-                            <img src="{{ asset('custom/assets/img/1.jpg') }}" class="img-fluid" alt="">
+                            <img src="{{ asset('home/assets/img/1.jpg') }}" class="img-fluid" alt="">
                             <div class="member-info">
                                 <div class="member-info-content">
                                     <h4>Destinasi Wisata Kuliner</h4>
@@ -92,7 +92,7 @@
 
                     <div class="col-lg-4 col-md-6">
                         <div class="member" data-aos="zoom-in" data-aos-delay="100">
-                            <img src="{{ asset('custom/assets/img/patung1.png') }}" class="img-fluid" alt="">
+                            <img src="{{ asset('home/assets/img/patung1.png') }}" class="img-fluid" alt="">
                             <div class="member-info">
                                 <div class="member-info-content">
                                     <h4>Patung Raminten</h4>
@@ -106,7 +106,7 @@
 
                     <div class="col-lg-4 col-md-6">
                         <div class="member" data-aos="zoom-in" data-aos-delay="100">
-                            <img src="{{ asset('custom/assets/img/3.png') }}" class="img-fluid" alt="">
+                            <img src="{{ asset('home/assets/img/3.png') }}" class="img-fluid" alt="">
                             <div class="member-info">
                                 <div class="member-info-content">
                                     <h4>Suasana Estetik</h4>
@@ -120,7 +120,7 @@
 
                     <div class="col-lg-4 col-md-6">
                         <div class="member" data-aos="zoom-in" data-aos-delay="100">
-                            <img src="{{ asset('custom/assets/img/4.png') }}" class="img-fluid" alt="">
+                            <img src="{{ asset('home/assets/img/4.png') }}" class="img-fluid" alt="">
                             <div class="member-info">
                                 <div class="member-info-content">
                                     <h4>Busana Waiter & Waiters</h4>
@@ -134,7 +134,7 @@
 
                     <div class="col-lg-4 col-md-6">
                         <div class="member" data-aos="zoom-in" data-aos-delay="100">
-                            <img src="{{ asset('custom/assets/img/51.png') }}" class="img-fluid" alt="">
+                            <img src="{{ asset('home/assets/img/51.png') }}" class="img-fluid" alt="">
                             <div class="member-info">
                                 <div class="member-info-content">
                                     <h4>Menu dan nama yang unik</h4>
@@ -148,7 +148,7 @@
 
                     <div class="col-lg-4 col-md-6">
                         <div class="member" data-aos="zoom-in" data-aos-delay="100">
-                            <img src="{{ asset('custom/assets/img/6.png') }}" class="img-fluid" alt="">
+                            <img src="{{ asset('home/assets/img/6.png') }}" class="img-fluid" alt="">
                             <div class="member-info">
                                 <div class="member-info-content">
                                     <h4>Nuansa budaya jawa</h4>
@@ -193,7 +193,7 @@
                 <div class="row menu-container" data-aos="fade-up" data-aos-delay="200">
 
                     <div class="col-lg-6 menu-item filter-starters">
-                        <img src="{{ asset('custom/assets/img/menu/lobster-bisque.jpg') }}" class="menu-img"
+                        <img src="{{ asset('home/assets/img/menu/lobster-bisque.jpg') }}" class="menu-img"
                             alt="">
                         <div class="menu-content">
                             <a href="#">Lobster Bisque</a><span>$5.95</span>
