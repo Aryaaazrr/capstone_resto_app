@@ -27,10 +27,22 @@ class CustomerController extends Controller
 
     public function create()
     {
-        $subcategory = Subcategory::where('name', 'Paket Reservasi')->first();
-        $product = Product::where('id_subcategory', $subcategory->id_subcategory)->with('subcategory')->get();
+        $subcategory = Subcategory::where('name', 'Menu Paket Reservasi')->first();
+        $products = Product::where('id_subcategory', $subcategory->id_subcategory)
+            ->with('subcategory')
+            ->get();
 
-        return view('pages.home.reservation', ['product' => $product]);
+        $products->each(function ($product) {
+            if (stripos($product->description, 'ijen') !== false) {
+                $product->packageType = 'Paket Ijen';
+            } elseif (stripos($product->description, 'kembulan') !== false) {
+                $product->packageType = 'Paket Kembulan';
+            } else {
+                $product->packageType = 'Paket tidak diketahui';
+            }
+        });
+
+        return view('pages.home.reservation', ['products' => $products]);
     }
 
     public function store(Request $request)
