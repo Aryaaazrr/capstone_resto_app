@@ -91,6 +91,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('subcategory/restore/{id}', [SubcategoryController::class, 'restore'])->name('admin.subcategory.restore');
 
         Route::get('transaction', [TransactionController::class, 'index'])->name('admin.transaction.index');
+        Route::get('transaction/{id}', [TransactionController::class, 'show'])->name('admin.transaction.show');
 
         Route::get('history', [HistoryTransactionController::class, 'index'])->name('admin.history.index');
 

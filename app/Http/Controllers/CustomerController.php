@@ -72,26 +72,31 @@ class CustomerController extends Controller
 
         try {
             $grandTotal = $this->calculateTotal($request->all());
-            $receipt = 'TR-' . strtoupper(Str::random(8)) . '-' . time();
+            $receipt = 'TR-' . strtoupper(Str::random(8)) . '-' . date('dmY');
 
             $transaction = new Transaction();
             $transaction->id_user = Auth::id();
             $transaction->no_receipt = $receipt;
             $transaction->grand_total = $grandTotal;
+            $transaction->no_telp = $request->phone;
+            $transaction->reservation_date = $request->date;
+            $transaction->reservation_time = $request->time;
+            $transaction->reservation_people = $request->people;
+            $transaction->reservation_message = $request->message;
+            $transaction->reservation_message = $request->message;
 
             if ($transaction->save()) {
                 foreach ($request->all() as $key => $value) {
                     if (Str::startsWith($key, 'qty_') && !is_null($value) && $value > 0) {
                         $productId = substr($key, 4);
-                        dd($productId);
                         $product = Product::find($productId);
                         if ($product) {
                             $detail_transaction = new TransactionDetails();
                             $detail_transaction->id_transaction = $transaction->id_transaction;
                             $detail_transaction->id_product = $productId;
-                            // $detail_transaction->quantity = $qty;
+                            $detail_transaction->quantity = $value;
                             $detail_transaction->price = $product->price;
-                            // $detail_transaction->total = $product->price * $qty;
+                            $detail_transaction->total = $product->price * $value;
                             if (!$detail_transaction->save()) {
                                 throw new Exception("Terjadi Kesalahan, Gagal mendaftar reservasi");
                             }

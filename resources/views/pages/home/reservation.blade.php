@@ -89,7 +89,7 @@
                                                                 {{ $item->name }}
                                                             </label>
                                                             <input class="form-control-sm bl-4" type="number"
-                                                                min="10" name="qty_{{ $item->id_product }}"
+                                                                min="1" name="qty_{{ $item->id_product }}"
                                                                 placeholder="0">
                                                         </div>
                                                     </div>
@@ -142,7 +142,7 @@
                                     <input type="text" name="name" class="form-control" id="name"
                                         placeholder="Nama" data-rule="minlen:4"
                                         data-msg="Silakan masukkan setidaknya 4 karakter" value="{{ Auth::user()->name }}"
-                                        readonly required>
+                                        required>
                                     <div class="validate"></div>
                                 </div>
                                 <div class="col-lg-4 col-md-6 form-group mt-3 mt-md-0">
