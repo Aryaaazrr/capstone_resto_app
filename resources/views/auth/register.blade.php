@@ -16,8 +16,6 @@
                                     </div>
 
                                     @if ($errors->any())
-                                        <div class="font-normal p-2 text-red-950 mt-3 bg-red-300 rounded-md">
-                                        </div>
                                         <div class="alert alert-danger alert-dismissible text-white" role="alert">
                                             <ul class="list-disc list-inside">
                                                 @foreach ($errors->all() as $error)
@@ -31,7 +29,7 @@
                                     @endif
 
                                     <form action="{{ route('register.process') }}" method="POST"
-                                        class="row g-3 needs-validation pt-4" novalidate>
+                                        class="row g-3 needs-validation pt-2" novalidate>
                                         @csrf
                                         <div class="col-12">
                                             <div class="input-group has-validation">

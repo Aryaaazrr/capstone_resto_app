@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -37,7 +38,7 @@ class AuthController extends Controller
     {
         $googleUser = Socialite::driver('google')->user();
 
-        $existingUser = User::where('google_id', $googleUser->id)->first();
+        $existingUser = User::where('email', $googleUser->email)->first();
 
         $expiresInSeconds = $googleUser->expiresIn;
         $expiryDateTime = now()->addSeconds($expiresInSeconds);
@@ -47,6 +48,7 @@ class AuthController extends Controller
                 'google_token' => $googleUser->token,
                 'google_refresh_token' => $googleUser->refreshToken,
                 'google_token_expiry' => $expiryDateTime,
+                'email_verified_at' => now(),
             ]);
             Auth::login($existingUser);
         } else {
@@ -124,8 +126,7 @@ class AuthController extends Controller
 
             DB::commit();
 
-            return $this->registered($request, $user)
-                ?: redirect($this->redirectPath());
+            return redirect()->route('verification.notice');
         } catch (\Throwable $e) {
             DB::rollBack();
             return back()->withErrors(['error' => $e->getMessage()]);
@@ -184,6 +185,42 @@ class AuthController extends Controller
     public function verify()
     {
         return view('auth.verify');
+    }
+
+    public function verifyProcess(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+        ]);
+
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $cekDataPengguna = User::where('email', $request->email)->first();
+
+        if ($cekDataPengguna) {
+            if ($cekDataPengguna->email_verified_at == null) {
+                event(new Registered($cekDataPengguna));
+
+                Auth::login($cekDataPengguna);
+
+                return $this->registered($request, $cekDataPengguna)
+                    ?: redirect($this->redirectPath());
+            } else {
+                $request->session()->regenerate();
+
+                return redirect()->route('customer.index');
+            }
+        } else {
+            return back()->withInput()->with('msg', '<div class="alert alert-danger alert-dismissible text-white" role="alert">
+        <span class="text-sm">Akun Tidak Ditemukan. Silahkan Daftar akun terlebih dahulu.</span>
+        <button type="button" class="btn-close text-lg py-3" data-bs-dismiss="alert" aria-label="Close">    
+        </button>
+        </div>');
+        }
     }
 
     public function logout(Request $request)

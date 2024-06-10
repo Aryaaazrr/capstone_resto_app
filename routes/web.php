@@ -44,7 +44,7 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/email/verify', function () {
-        return view('auth.verify-email');
+        return view('vendor.email.verify-email');
     })->name('verification.notice');
 
     Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {

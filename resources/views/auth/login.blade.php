@@ -16,7 +16,7 @@
                                     </div>
                                     {!! session('msg') !!}
                                     <form action="{{ route('login.process') }}" method="POST"
-                                        class="row g-3 needs-validation pt-4" novalidate>
+                                        class="row g-3 needs-validation pt-2" novalidate>
                                         @csrf
                                         <div class="col-12">
                                             <div class="input-group has-validation">
