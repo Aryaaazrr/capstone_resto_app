@@ -21,7 +21,7 @@ return new class extends Migration
             $table->date('reservation_date')->notNull();
             $table->time('reservation_time')->notNull();
             $table->integer('reservation_people')->notNull();
-            $table->text('reservation_message')->default('-');
+            $table->text('reservation_message')->default('-')->nullable();
             $table->enum('status_transaction', ['Pending', 'Process', 'Completed', 'Cancel'])->default('Pending');
             $table->enum('status_payment', ['Pending', 'Paid', 'Failed', 'Canceled'])->default('Pending');
             $table->string('token_payment')->nullable();

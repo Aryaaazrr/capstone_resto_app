@@ -256,12 +256,11 @@
                     {
                         data: null,
                         render: function(data) {
-                            if (data.status_transaction == 'process') {
+                            if (data.status_transaction == 'Process') {
                                 return '<div class="row justify-content-center">' +
                                     '<div class="col-auto">' +
-                                    '<button type="button" class="btn btn-warning m-1" data-bs-toggle="modal" ' +
-                                    'data-bs-target="#editModal" data-id="' + data.id_subcategory +
-                                    '" data-subcategory="' + data.name + '">' +
+                                    '<button class="btn btn-warning m-1" id="pay-button" data-id="' +
+                                    data.id_transaction + '">' +
                                     'Pay Now' +
                                     '</button>' +
                                     '</div>' +
@@ -269,7 +268,8 @@
                             } else {
                                 return '<div class="row justify-content-center">' +
                                     '<div class="col-auto">' +
-                                    '-' +
+                                    '<span class="badge bg-warning text-dark">Waiting for confirmation' +
+                                    '</span>' +
                                     '</div>' +
                                     '</div>';
                             }
@@ -282,16 +282,29 @@
                     $('td:eq(0)', row).html(dt.page.info().start + index + 1);
                 }
             });
+        });
 
-            $('#editModal').on('show.bs.modal', function(event) {
-                var button = $(event.relatedTarget);
-                var id_subcategory = button.data('id');
-                var subcategory = button.data('subcategory');
-                var modal = $(this);
+        $('#myTableOrder tbody').on('click', '.pay-button', function(event) {
+            var transactionId = $(this).data('id');
 
-                modal.find('.modal-body #id_subcategory').val(id_subcategory);
-                modal.find('.modal-body #subcategory').val(subcategory);
-            });
+            fetch('{{ route('customer.reservation.getToken') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    },
+                    body: JSON.stringify({
+                        id_transaction: transactionId
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.snap_token) {
+                        snap.pay(data.snap_token);
+                    } else {
+                        alert('Error getting Snap token');
+                    }
+                });
         });
     </script>
 @endsection

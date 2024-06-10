@@ -83,7 +83,9 @@ class CustomerController extends Controller
             $transaction->reservation_time = $request->time;
             $transaction->reservation_people = $request->people;
             $transaction->reservation_message = $request->message;
-            $transaction->reservation_message = $request->message;
+
+            $snapToken = $this->getSnapToken($transaction, $grandTotal);
+            $transaction->token_payment = $snapToken;
 
             if ($transaction->save()) {
                 foreach ($request->all() as $key => $value) {
@@ -109,30 +111,9 @@ class CustomerController extends Controller
                 throw new Exception("Terjadi Kesalahan, Gagal membuat reservasi");
             }
 
-            // Konfigurasi Midtrans
-            // Config::$serverKey = config('midtrans.server_key');
-            // Config::$isProduction = config('midtrans.is_production');
-            // Config::$isSanitized = config('midtrans.is_sanitized');
-            // Config::$is3ds = config('midtrans.is_3ds');
-
-            // $params = [
-            //     'transaction_details' => [
-            //         'order_id' => $transaction->no_receipt,
-            //         'gross_amount' => $grandTotal,
-            //     ],
-            //     'customer_details' => [
-            //         'first_name' => Auth::user()->username,
-            //     ],
-            // ];
-
-            // Dapatkan token transaksi Midtrans
-            $snapToken = $this->getSnapToken();
-            // $transaction->token_payment = $snapToken;
-            // $transaction->save();
-
             DB::commit();
 
-            return view('pages.home.payment', compact('snapToken'));
+            return view('pages.home.order');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withErrors(['error' => $e->getMessage()]);
@@ -156,6 +137,7 @@ class CustomerController extends Controller
                     'reservation_people' => $row->reservation_people,
                     'status_transaction' => $row->status_transaction,
                     'status_payment' => $row->status_payment,
+                    'token_payment' => $row->token_payment,
                 ];
             }
             return DataTables::of($rowData)->toJson();
@@ -183,26 +165,25 @@ class CustomerController extends Controller
         return $total;
     }
 
-    public function getSnapToken()
+    public function getSnapToken($transaction, $grandTotal)
     {
         $params = [
             'transaction_details' => [
-                'order_id' => uniqid(),
-                'gross_amount' => 10000,
+                'order_id' => $transaction->no_receipt,
+                'gross_amount' => $grandTotal,
             ],
             'customer_details' => [
-                'first_name' => 'Customer',
-                'last_name' => '1',
-                'email' => 'customer@gmail.com',
-                'phone' => '088876563565',
+                'first_name' => Auth::user()->name,
+                'email' => Auth::user()->email,
+                'phone' => $transaction->no_telp,
             ],
         ];
 
         try {
-            $snapToken = \Midtrans\Snap::getSnapToken($params);
-            return response()->json(['snap_token' => $snapToken]);
+            $snapToken = Snap::getSnapToken($params);
+            return $snapToken;
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            throw new Exception("Error getting Snap token: " . $e->getMessage());
         }
     }
 }
