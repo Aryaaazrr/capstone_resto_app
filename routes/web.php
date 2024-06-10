@@ -92,6 +92,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::get('transaction', [TransactionController::class, 'index'])->name('admin.transaction.index');
         Route::get('transaction/{id}', [TransactionController::class, 'show'])->name('admin.transaction.show');
+        Route::post('transaction/confirm/{id}', [TransactionController::class, 'confirm'])->name('admin.transaction.confirm');
+        Route::post('transaction/cancel/{id}', [TransactionController::class, 'cancel'])->name('admin.transaction.cancel');
 
         Route::get('history', [HistoryTransactionController::class, 'index'])->name('admin.history.index');
 

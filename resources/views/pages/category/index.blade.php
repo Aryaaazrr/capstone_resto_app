@@ -166,8 +166,14 @@
                                 '</div>';
                         }
                     }
-                ]
+                ],
+                rowCallback: function(row, data, index) {
+                    var dt = this.api();
+                    $(row).attr('data-id', data.id);
+                    $('td:eq(0)', row).html(dt.page.info().start + index + 1);
+                }
             });
+
 
             $('#editModal').on('show.bs.modal', function(event) {
                 var button = $(event.relatedTarget);

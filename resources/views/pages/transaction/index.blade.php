@@ -32,10 +32,6 @@
                                                 <th class="text-center">Name</th>
                                                 <th class="text-center">No Receipt</th>
                                                 <th class="text-center">Grand Total</th>
-                                                <th class="text-center">No Telp</th>
-                                                <th class="text-center">Date</th>
-                                                <th class="text-center">Time</th>
-                                                <th class="text-center">People</th>
                                                 <th class="text-center">Status Transaction</th>
                                                 <th class="text-center">Status Payment</th>
                                                 <th class="text-center">Action</th>
@@ -52,90 +48,6 @@
             </div>
         </div>
     </section>
-
-    {{-- modal edit --}}
-    {{-- <div class="modal fade" id="editModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <form action="{{ route('admin.product.update') }}" class=" needs-validation" method="POST"
-                    enctype="multipart/form-data" novalidate>
-                    @csrf
-                    @method('PUT')
-                    <div class="modal-header">
-                        <h5 class="modal-title">Add Product</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body row">
-                        <input type="hidden" name="id_product" id="id_product">
-                        <div class="col-md-6 mb-2">
-                            <label for="name" class="form-label">Product Name</label>
-                            <input type="text" class="form-control" name="name" id="name"
-                                placeholder="Enter the product name" required>
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
-                            <div class="invalid-feedback">
-                                Please provide a valid product name.
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-2">
-                            <label for="subcategory" class="form-label">Subcategory</label>
-                            <select class="form-select" id="subcategory" name="subcategory" required>
-                                <option selected disabled value="">Choose Subcategory
-                                </option>
-                                @foreach ($subcategory as $item)
-                                    <option value="{{ $item->id_subcategory }}">
-                                        {{ $item->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
-                            <div class="invalid-feedback">
-                                Please select a valid subcategory.
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-2">
-                            <label for="image" class="form-label">Image</label>
-                            <input class="form-control" type="file" id="image" name="image">
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
-                            <div class="invalid-feedback">
-                                Please select a valid image.
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-2">
-                            <label for="price" class="form-label">Price</label>
-                            <input type="text" class="form-control" name="price" id="price"
-                                placeholder="Enter the price product" required>
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
-                            <div class="invalid-feedback">
-                                Please provide a valid price product.
-                            </div>
-                        </div>
-                        <div class="col-md-12 mb-2">
-                            <label for="description" class="col-sm-2 col-form-label">Description</label>
-                            <textarea class="form-control" style="height: 100px" id="description" name="description" required></textarea>
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
-                            <div class="invalid-feedback">
-                                Please provide a valid description product.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button class="btn btn-success" type="submit">Submit</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div> --}}
 
     @if (session('success'))
         <script>
@@ -186,44 +98,144 @@
                         }
                     },
                     {
-                        data: 'no_telp',
-                        name: 'no_telp'
-                    },
-                    {
-                        data: 'reservation_date',
-                        name: 'reservation_date'
-                    },
-                    {
-                        data: 'reservation_time',
-                        name: 'reservation_time'
-                    },
-                    {
-                        data: 'reservation_people',
-                        name: 'reservation_people'
-                    },
-                    {
                         data: 'status_transaction',
-                        name: 'status_transaction'
+                        name: 'status_transaction',
+                        render: function(data) {
+                            if (data == 'Pending') {
+                                return '<span class="badge text-bg-warning text-white">' + data +
+                                    '</span>';
+                            } else if (data == 'Process') {
+                                return '<span class="badge text-bg-secondary text-white">' + data +
+                                    '</span>';
+                            } else if (data == 'Completed') {
+                                return '<span class="badge text-bg-success text-white">' + data +
+                                    '</span>';
+                            } else {
+                                return '<span class="badge text-bg-danger text-white">' + data +
+                                    '</span>';
+                            }
+                        }
                     },
                     {
                         data: 'status_payment',
-                        name: 'status_payment'
+                        name: 'status_payment',
+                        render: function(data) {
+                            if (data == 'Pending') {
+                                return '<span class="badge text-bg-warning text-white">' + data +
+                                    '</span>';
+                            } else if (data == 'Paid') {
+                                return '<span class="badge text-bg-success text-white">' + data +
+                                    '</span>';
+                            } else {
+                                return '<span class="badge text-bg-danger text-white">' + data +
+                                    '</span>';
+                            }
+                        }
                     },
                     {
                         data: null,
                         render: function(data) {
-                            return '<div class="row justify-content-center">' +
-                                '<div class="col-auto">' +
-                                '<a href="" class="btn btn-secondary m-1" data-id="' +
-                                data.id_transaction + '">' +
-                                'Detail' +
-                                '</a>' +
-                                '</div>' +
-                                '</div>';
+                            if (data.status_payment == 'Pending') {
+                                return '<div class="row justify-content-center">' +
+                                    '<div class="col-auto">' +
+                                    '<button type="button" class="btn btn-primary m-1" onclick="confirm(' +
+                                    data.id_transaction + ')" ' +
+                                    'data-id="' + data.id_transaction + '">' +
+                                    'Confirm' +
+                                    '</button>' +
+                                    '<a href="{{ route('admin.transaction.show', '') }}/' + data
+                                    .id_transaction +
+                                    '" class="btn btn-secondary m-1" ' +
+                                    'data-id="' + data.id_category + '">' +
+                                    'Detail' +
+                                    '</a>' +
+                                    '</div>' +
+                                    '</div>';
+                            } else {
+                                return '<div class="row justify-content-center">' +
+                                    '<div class="col-auto">' +
+                                    '<a href="{{ route('admin.transaction.show', '') }}/' + data
+                                    .id_transaction +
+                                    '" class="btn btn-secondary m-1" ' +
+                                    'data-id="' + data.id_category + '">' +
+                                    'Detail' +
+                                    '</a>' +
+                                    '</div>' +
+                                    '</div>';
+                            }
                         }
                     }
-                ]
+                ],
+                rowCallback: function(row, data, index) {
+                    var dt = this.api();
+                    $(row).attr('data-id', data.id);
+                    $('td:eq(0)', row).html(dt.page.info().start + index + 1);
+                }
             });
         });
+
+        function confirm(id) {
+            Swal.fire({
+                title: 'Warning',
+                text: "Confirm to the next transaction process?",
+                icon: 'warning',
+                showCloseButton: true,
+                showCancelButton: true,
+                showDenyButton: true,
+                confirmButtonColor: '#3085d6',
+                denyButtonColor: '#d33',
+                confirmButtonText: 'Accept',
+                denyButtonText: 'Cancel',
+                cancelButtonText: 'Back'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ url('admin/transaction/confirm') }}/" + id,
+                        type: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            Swal.fire(
+                                'Transaction accepted!',
+                                'Data received successfully.',
+                                'success'
+                            );
+                            $('#myTableTransaction').DataTable().ajax.reload();
+                        },
+                        error: function(xhr, status, error) {
+                            Swal.fire(
+                                'Oppss!',
+                                'An error occurred while deleting data. Please try again',
+                                'error'
+                            );
+                        }
+                    });
+                } else if (result.isDenied) {
+                    $.ajax({
+                        url: "{{ url('admin/transaction/cancel') }}/" + id,
+                        type: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            Swal.fire(
+                                'Transaction cancelled!',
+                                'Data cancelled successfully.',
+                                'success'
+                            );
+                            $('#myTableTransaction').DataTable().ajax.reload();
+                        },
+                        error: function(xhr, status, error) {
+                            Swal.fire(
+                                'Oppss!',
+                                'An error occurred while deleting data. Please try again',
+                                'error'
+                            );
+                        }
+                    });
+                }
+            });
+        }
     </script>
 @endsection
