@@ -178,14 +178,9 @@
                     <div class="col-lg-12 d-flex justify-content-center">
                         <ul id="menu-flters">
                             <li data-filter="*" class="filter-active">Semua</li>
-                            <li data-filter=".filter-starters">Menu Utama</li>
-                            <li data-filter=".filter-salads">Menu Dessert</li>
-                            <li data-filter=".filter-specialty">Menu Lauk</li>
-                            <li data-filter=".filter-specialty">Menu Snack</li>
-                            <li data-filter=".filter-specialty">Jus</li>
-                            <li data-filter=".filter-specialty">Dingin</li>
-                            <li data-filter=".filter-specialty">Panas</li>
-                            <li data-filter=".filter-specialty">Hot & Cold</li>
+                            @foreach ($subcategory as $item)
+                                <li data-filter=".filter-{{ $item->name }}">{{ $item->name }}</li>
+                            @endforeach
                         </ul>
                     </div>
                 </div>

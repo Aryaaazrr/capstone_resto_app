@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
+use App\Models\Subcategory;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,8 +16,10 @@ class HomeController extends Controller
     public function index()
     {
         $id_customer = Auth::id();
+        $subcategory = Subcategory::all();
+        $product = Product::with('subcategory')->get();
 
-        return view('pages.home.index', ['id_customer' => $id_customer]);
+        return view('pages.home.index', ['id_customer' => $id_customer, 'subcategory' => $subcategory, 'product' => $product]);
     }
 
     /**

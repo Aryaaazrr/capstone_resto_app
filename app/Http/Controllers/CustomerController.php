@@ -16,16 +16,16 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Midtrans\Config;
 use Midtrans\Snap;
+use Yajra\DataTables\DataTables;
 
 class CustomerController extends Controller
 {
     public function index()
     {
         $id_customer = Auth::id();
-        if ($id_customer) {
-            return view('pages.home.index', ['id_customer' => $id_customer]);
-        }
-        return view('pages.home.index');
+        $subcategory = Subcategory::all();
+
+        return view('pages.home.index', ['id_customer' => $id_customer, 'subcategory' => $subcategory]);
     }
 
     public function create()
@@ -138,6 +138,32 @@ class CustomerController extends Controller
             return back()->withErrors(['error' => $e->getMessage()]);
         }
     }
+
+    public function show(Request $request)
+    {
+        $transaction = Transaction::where('id_user', Auth::id())->with('user')->get();
+
+        if ($request->ajax()) {
+            $rowData = [];
+
+            foreach ($transaction as $row) {
+                $rowData[] = [
+                    'id_transaction' => $row->id_transaction,
+                    'no_receipt' => $row->no_receipt,
+                    'grand_total' => $row->grand_total,
+                    'reservation_date' => $row->reservation_date,
+                    'reservation_time' => $row->reservation_time,
+                    'reservation_people' => $row->reservation_people,
+                    'status_transaction' => $row->status_transaction,
+                    'status_payment' => $row->status_payment,
+                ];
+            }
+            return DataTables::of($rowData)->toJson();
+        }
+
+        return view('pages.home.order');
+    }
+
 
     public function calculateTotal(array $items)
     {

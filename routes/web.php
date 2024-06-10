@@ -104,5 +104,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('reservation', [CustomerController::class, 'create'])->name('customer.reservation');
         Route::post('reservation', [CustomerController::class, 'store'])->name('customer.reservation.process');
         Route::post('reservation/get-snap-token', [CustomerController::class, 'getSnapToken'])->name('customer.reservation.getToken');
+
+        Route::get('order', [CustomerController::class, 'show'])->name('customer.order');
     });
 });

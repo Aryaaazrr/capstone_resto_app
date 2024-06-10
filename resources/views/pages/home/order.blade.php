@@ -1,6 +1,6 @@
 @extends('layouts.home.app')
 
-@section('title', 'Reservasi')
+@section('title', 'Pesanan')
 
 @section('content')
     <main id="main">
@@ -8,14 +8,14 @@
             <div class="container">
 
                 <div class="d-flex justify-content-between align-items-center">
-                    <h2>Reservasi</h2>
+                    <h2>Pesanan</h2>
                     <ol>
                         @if (Auth::user())
                             <li><a href="{{ route('customer.index') }}">Home</a></li>
                         @else
                             <li><a href="{{ route('home') }}">Home</a></li>
                         @endif
-                        <li>Reservasi</li>
+                        <li>Pesanan</li>
                     </ol>
                 </div>
 
@@ -28,39 +28,35 @@
                 <div class="container" data-aos="fade-up">
 
                     <div class="section-title">
-                        <h2>Daftar Menu</h2>
-                        <p>Menu Paket Reservasi</p>
+                        <h2>Daftar Pesananmu</h2>
+                        <p>Terima Kasih Pesanannya</p>
                     </div>
 
-                    <div class="row" data-aos="fade-up" data-aos-delay="100">
-                        <div class="col-lg-12 d-flex justify-content-center">
-                            <ul id="menu-flters">
-                                <li data-filter="*" class="filter-active">Semua</li>
-                                <li data-filter=".filter-ijen">Paket Ijen</li>
-                                <li data-filter=".filter-kembulan">Paket Kembulan</li>
-                            </ul>
+                    <div class="row " data-aos="fade-up" data-aos-delay="200">
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center text-white" id="myTableOrder">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th class="text-center">No</th>
+                                        <th class="text-center">No Receipt</th>
+                                        <th class="text-center">Grand Total</th>
+                                        <th class="text-center">Date</th>
+                                        <th class="text-center">Time</th>
+                                        <th class="text-center">People</th>
+                                        <th class="text-center">Status Transaction</th>
+                                        <th class="text-center">Status Payment</th>
+                                        <th class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
-                    </div>
-
-                    <div class="row menu-container" data-aos="fade-up" data-aos-delay="200">
-                        @foreach ($products as $item)
-                            <div
-                                class="col-lg-6 menu-item {{ $item->packageType == 'Paket Ijen' ? 'filter-ijen' : ($item->packageType == 'Paket Kembulan' ? 'filter-kembulan' : '') }}">
-                                <img src="{{ asset('uploads/menu/' . $item->image) }}" class="menu-img" alt="">
-                                <div class="menu-content">
-                                    <a href="#">{{ $item->name }}</a>
-                                    <span>Rp {{ number_format($item->price, 2, ',', '.') }}</span>
-                                </div>
-                                <div class="menu-ingredients">
-                                    {{ $item->description }}
-                                </div>
-                            </div>
-                        @endforeach
                     </div>
 
                 </div>
             </section><!-- End Menu Section -->
-
+            {{-- 
             <div class="container">
                 <form action="{{ route('customer.reservation.process') }}" method="POST" id="reservation-form">
                     @csrf
@@ -89,7 +85,7 @@
                                                                 {{ $item->name }}
                                                             </label>
                                                             <input class="form-control-sm bl-4" type="number"
-                                                                min="10" name="qty_{{ $item->id_product }}"
+                                                                min="1" name="qty_{{ $item->id_product }}"
                                                                 placeholder="0">
                                                         </div>
                                                     </div>
@@ -188,7 +184,7 @@
                     </section>
                 </form>
 
-            </div>
+            </div> --}}
         </section>
 
     </main>
@@ -212,4 +208,90 @@
         </script>
     @endif
 
+    <script>
+        $(document).ready(function() {
+            $('#myTableOrder').DataTable({
+                serverSide: true,
+                responsive: true,
+                processing: true,
+                ajax: '{{ route('customer.order') }}',
+                columns: [{
+                        data: 'id_transaction',
+                        name: 'id_transaction'
+                    },
+                    {
+                        data: 'no_receipt',
+                        name: 'no_receipt'
+                    },
+                    {
+                        data: 'grand_total',
+                        name: 'grand_total',
+                        render: function(data) {
+                            return data !== null ? parseInt(data).toLocaleString('id-ID', {
+                                style: 'currency',
+                                currency: 'IDR'
+                            }) : '-';
+                        }
+                    },
+                    {
+                        data: 'reservation_date',
+                        name: 'reservation_date'
+                    },
+                    {
+                        data: 'reservation_time',
+                        name: 'reservation_time'
+                    },
+                    {
+                        data: 'reservation_people',
+                        name: 'reservation_people'
+                    },
+                    {
+                        data: 'status_transaction',
+                        name: 'status_transaction'
+                    },
+                    {
+                        data: 'status_payment',
+                        name: 'status_payment'
+                    },
+                    {
+                        data: null,
+                        render: function(data) {
+                            if (data.status_transaction == 'process') {
+                                return '<div class="row justify-content-center">' +
+                                    '<div class="col-auto">' +
+                                    '<button type="button" class="btn btn-warning m-1" data-bs-toggle="modal" ' +
+                                    'data-bs-target="#editModal" data-id="' + data.id_subcategory +
+                                    '" data-subcategory="' + data.name + '">' +
+                                    'Pay Now' +
+                                    '</button>' +
+                                    '</div>' +
+                                    '</div>';
+                            } else {
+                                return '<div class="row justify-content-center">' +
+                                    '<div class="col-auto">' +
+                                    '-' +
+                                    '</div>' +
+                                    '</div>';
+                            }
+                        }
+                    }
+                ],
+                rowCallback: function(row, data, index) {
+                    var dt = this.api();
+                    $(row).attr('data-id', data.id);
+                    $('td:eq(0)', row).html(dt.page.info().start + index + 1);
+                }
+            });
+
+            $('#editModal').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget);
+                var id_subcategory = button.data('id');
+                var subcategory = button.data('subcategory');
+                var modal = $(this);
+
+                modal.find('.modal-body #id_subcategory').val(id_subcategory);
+                modal.find('.modal-body #subcategory').val(subcategory);
+            });
+        });
+    </script>
 @endsection

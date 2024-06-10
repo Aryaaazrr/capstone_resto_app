@@ -127,10 +127,33 @@ class ProductController extends Controller
         }
     }
 
-    public function destroy(Product $produk)
+    public function destroy($id)
     {
-        $produk->delete();
-        return redirect()->route('product.index')
-            ->with('success', 'Produk berhasil dihapus.');
+        $product = Product::find($id);
+        if ($product) {
+            $product->delete();
+            return response()->json(['message' => 'Data deleted successfully.']);
+        }
+        return response()->json(['message' => 'Data not found.'], 404);
+    }
+
+    public function restore($id)
+    {
+        $product = Product::withTrashed()->find($id);
+        if ($product) {
+            $product->restore();
+            return response()->json(['message' => 'Data restored successfully.']);
+        }
+        return response()->json(['message' => 'Data not found.'], 404);
+    }
+
+    public function forceDelete($id)
+    {
+        $product = Product::withTrashed()->find($id);
+        if ($product) {
+            $product->forceDelete();
+            return response()->json(['message' => 'Data has been successfully deleted permanently.']);
+        }
+        return response()->json(['message' => 'Data not found.'], 404);
     }
 }

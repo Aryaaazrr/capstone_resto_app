@@ -122,9 +122,9 @@ class SubcategoryController extends Controller
         $subcategory = Subcategory::find($id);
         if ($subcategory) {
             $subcategory->delete();
-            return response()->json(['message' => 'Data berhasil dihapus.']);
+            return response()->json(['message' => 'Data deleted successfully.']);
         }
-        return response()->json(['message' => 'Data tidak ditemukan.'], 404);
+        return response()->json(['message' => 'Data not found.'], 404);
     }
 
     public function restore($id)
@@ -132,9 +132,9 @@ class SubcategoryController extends Controller
         $subcategory = Subcategory::withTrashed()->find($id);
         if ($subcategory) {
             $subcategory->restore();
-            return response()->json(['message' => 'Data berhasil dikembalikan.']);
+            return response()->json(['message' => 'Data restored successfully.']);
         }
-        return response()->json(['message' => 'Data tidak ditemukan.'], 404);
+        return response()->json(['message' => 'Data not found.'], 404);
     }
 
     public function forceDelete($id)
@@ -142,8 +142,8 @@ class SubcategoryController extends Controller
         $subcategory = Subcategory::withTrashed()->find($id);
         if ($subcategory) {
             $subcategory->forceDelete();
-            return response()->json(['message' => 'Data berhasil dihapus secara permanen.']);
+            return response()->json(['message' => 'Data has been successfully deleted permanently.']);
         }
-        return response()->json(['message' => 'Data tidak ditemukan.'], 404);
+        return response()->json(['message' => 'Data not found.'], 404);
     }
 }
