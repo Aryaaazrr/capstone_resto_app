@@ -107,18 +107,29 @@ class AuthController extends Controller
                 ->withInput();
         }
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'id_role' => 2
-        ]);
+        DB::beginTransaction();
 
-        event(new Registered($user));
+        try {
 
-        Auth::login($user);
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'id_role' => 2
+            ]);
 
-        return redirect()->route('verification.verify');
+            event(new Registered($user));
+
+            Auth::login($user);
+
+            DB::commit();
+
+            return $this->registered($request, $user)
+                ?: redirect($this->redirectPath());
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
     public function login()
