@@ -168,117 +168,72 @@
         <!-- ======= Menu Section ======= -->
         <section id="menu" class="menu section-bg">
             <div class="container" data-aos="fade-up">
-
                 <div class="section-title">
                     <h2>Daftar Menu</h2>
                     <p>Menu Spesial Kami</p>
                 </div>
 
                 <div class="row" data-aos="fade-up" data-aos-delay="100">
-                    <div class="col-lg-12 d-flex justify-content-center">
-                        <ul id="menu-flters">
-                            <li data-filter="*" class="filter-active">Semua</li>
+                    <div class="col-lg-12">
+                        <ul class="nav nav-tabs justify-content-center" id="menu-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="all-tab" data-toggle="tab" href="#all"
+                                    role="tab" aria-controls="all" aria-selected="true">Semua</a>
+                            </li>
                             @foreach ($subcategory as $item)
-                                <li data-filter=".filter-{{ $item->name }}">{{ $item->name }}</li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="{{ $item->name }}-tab" data-toggle="tab"
+                                        href="#{{ $item->name }}" role="tab" aria-controls="{{ $item->name }}"
+                                        aria-selected="false">{{ $item->name }}</a>
+                                </li>
                             @endforeach
                         </ul>
                     </div>
                 </div>
 
-                <div class="row menu-container" data-aos="fade-up" data-aos-delay="200">
-
-                    <div class="col-lg-6 menu-item filter-starters">
-                        <img src="{{ asset('home/assets/img/menu/lobster-bisque.jpg') }}" class="menu-img"
-                            alt="">
-                        <div class="menu-content">
-                            <a href="#">Lobster Bisque</a><span>$5.95</span>
-                        </div>
-                        <div class="menu-ingredients">
-                            Lorem, deren, trataro, filede, nerada
-                        </div>
+                <div class="menu-container tab-content" data-aos="fade-up" data-aos-delay="200">
+                    <div class="row tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
+                        @foreach ($product as $item)
+                            <div class="col-lg-6 col-md-6 col-sm-12 menu-item">
+                                <img src="{{ asset('uploads/menu/' . $item->image) }}" class="menu-img" alt="">
+                                <div class="menu-content">
+                                    <a href="#">{{ $item->name }}</a><span>Rp.
+                                        {{ number_format($item->price) }}</span>
+                                </div>
+                                <div class="menu-ingredients">
+                                    {{ $item->description }}
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
-
-                    <div class="col-lg-6 menu-item filter-specialty">
-                        <img src="assets/img/menu/bread-barrel.jpg" class="menu-img" alt="">
-                        <div class="menu-content">
-                            <a href="#">Bread Barrel</a><span>$6.95</span>
-                        </div>
-                        <div class="menu-ingredients">
-                            Lorem, deren, trataro, filede, nerada
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6 menu-item filter-starters">
-                        <img src="assets/img/menu/cake.jpg" class="menu-img" alt="">
-                        <div class="menu-content">
-                            <a href="#">Crab Cake</a><span>$7.95</span>
-                        </div>
-                        <div class="menu-ingredients">
-                            A delicate crab cake served on a toasted roll with lettuce and tartar sauce
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6 menu-item filter-salads">
-                        <img src="assets/img/menu/caesar.jpg" class="menu-img" alt="">
-                        <div class="menu-content">
-                            <a href="#">Caesar Selections</a><span>$8.95</span>
-                        </div>
-                        <div class="menu-ingredients">
-                            Lorem, deren, trataro, filede, nerada
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6 menu-item filter-specialty">
-                        <img src="assets/img/menu/tuscan-grilled.jpg" class="menu-img" alt="">
-                        <div class="menu-content">
-                            <a href="#">Tuscan Grilled</a><span>$9.95</span>
-                        </div>
-                        <div class="menu-ingredients">
-                            Grilled chicken with provolone, artichoke hearts, and roasted red pesto
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6 menu-item filter-starters">
-                        <img src="assets/img/menu/mozzarella.jpg" class="menu-img" alt="">
-                        <div class="menu-content">
-                            <a href="#">Mozzarella Stick</a><span>$4.95</span>
-                        </div>
-                        <div class="menu-ingredients">
-                            Lorem, deren, trataro, filede, nerada
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6 menu-item filter-salads">
-                        <img src="assets/img/menu/greek-salad.jpg" class="menu-img" alt="">
-                        <div class="menu-content">
-                            <a href="#">Greek Salad</a><span>$9.95</span>
-                        </div>
-                        <div class="menu-ingredients">
-                            Fresh spinach, crisp romaine, tomatoes, and Greek olives
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6 menu-item filter-salads">
-                        <img src="assets/img/menu/spinach-salad.jpg" class="menu-img" alt="">
-                        <div class="menu-content">
-                            <a href="#">Spinach Salad</a><span>$9.95</span>
-                        </div>
-                        <div class="menu-ingredients">
-                            Fresh spinach with mushrooms, hard boiled egg, and warm bacon vinaigrette
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6 menu-item filter-specialty">
-                        <img src="assets/img/menu/lobster-roll.jpg" class="menu-img" alt="">
-                        <div class="menu-content">
-                            <a href="#">Lobster Roll</a><span>$12.95</span>
-                        </div>
-                        <div class="menu-ingredients">
-                            Plump lobster meat, mayo and crisp lettuce on a toasted bulky roll
-                        </div>
+                    <div class="tab-content">
+                        @foreach ($subcategory as $item)
+                            <div class="tab-pane fade" id="{{ $item->name }}" role="tabpanel"
+                                aria-labelledby="{{ $item->name }}-tab">
+                                <div class="row" style="padding: 0 15px">
+                                    @foreach ($product as $product_item)
+                                        @if ($product_item->subcategory->name === $item->name)
+                                            <div class="col-lg-6 col-md-6 col-sm-12 mt-5">
+                                                <img src="{{ asset('uploads/menu/' . $product_item->image) }}"
+                                                    class="menu-img" alt="">
+                                                <div class="menu-content">
+                                                    <a href="#">{{ $product_item->name }}</a><span>Rp.
+                                                        {{ number_format($product_item->price) }}</span>
+                                                </div>
+                                                <div class="menu-ingredients">
+                                                    {{ $product_item->description }}
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
 
                 </div>
+
+            </div>
 
             </div>
         </section><!-- End Menu Section -->
@@ -789,4 +744,28 @@
         </section><!-- End Contact Section -->
 
     </main><!-- End #main -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuTabs = document.querySelectorAll('#menu-tabs .nav-link');
+
+            menuTabs.forEach(function(tab) {
+                tab.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const tabId = this.getAttribute('href').substr(1);
+                    const activeTabs = document.querySelectorAll('.tab-pane.show');
+
+                    activeTabs.forEach(function(activeTab) {
+                        activeTab.classList.remove('show', 'active');
+                    });
+
+                    document.getElementById(tabId).classList.add('show', 'active');
+                    menuTabs.forEach(function(menuTab) {
+                        menuTab.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
 @endsection
