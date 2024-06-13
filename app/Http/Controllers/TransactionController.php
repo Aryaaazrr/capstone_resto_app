@@ -37,7 +37,7 @@ class TransactionController extends Controller
             return DataTables::of($rowData)->toJson();
         }
 
-        return view('pages.transaction.index');
+        return view('pages.admin.transaction.index');
     }
 
     /**
@@ -97,7 +97,7 @@ class TransactionController extends Controller
             return DataTables::of($rowData)->toJson();
         }
 
-        return view('pages.transaction.show', ['transaction' => $transaction]);
+        return view('pages.admin.transaction.show', ['transaction' => $transaction]);
     }
 
     /**

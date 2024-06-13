@@ -35,7 +35,7 @@ class SubcategoryController extends Controller
             return DataTables::of($rowData)->toJson();
         }
 
-        return view('pages.subcategory.index', ['category' => $category]);
+        return view('pages.admin.subcategory.index', ['category' => $category]);
     }
 
     public function show(Request $request)
@@ -57,7 +57,7 @@ class SubcategoryController extends Controller
             return DataTables::of($rowData)->toJson();
         }
 
-        return view('pages.subcategory.show');
+        return view('pages.admin.subcategory.show');
     }
 
     /**

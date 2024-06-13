@@ -27,7 +27,7 @@ class CategoryController extends Controller
             return DataTables::of($rowData)->toJson();
         }
 
-        return view('pages.category.index');
+        return view('pages.admin.category.index');
     }
 
     public function show(Request $request)
@@ -47,7 +47,7 @@ class CategoryController extends Controller
             return DataTables::of($rowData)->toJson();
         }
 
-        return view('pages.category.show');
+        return view('pages.admin.category.show');
     }
 
 

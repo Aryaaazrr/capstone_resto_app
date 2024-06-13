@@ -77,7 +77,14 @@ class CustomerController extends Controller
 
         DB::beginTransaction();
 
+
         try {
+            $cekRiwayat = Transaction::with('id_user', Auth::id())->where('status_payment', 'pending')->count();
+
+            if ($cekRiwayat > 0) {
+                throw new Exception("Terjadi Kesalahan, Anda memiliki pesanan yang belum dibayar");
+            }
+
             $grandTotal = $this->calculateTotal($request->all());
             $receipt = 'TR-' . strtoupper(Str::random(8)) . '-' . date('dmY');
 

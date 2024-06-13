@@ -38,7 +38,7 @@ class ProductController extends Controller
             return DataTables::of($rowData)->toJson();
         }
 
-        return view('pages.product.index', ['subcategory' => $subcategory]);
+        return view('pages.admin.product.index', ['subcategory' => $subcategory]);
     }
 
     public function store(Request $request)
@@ -78,9 +78,30 @@ class ProductController extends Controller
         }
     }
 
-    public function show(Product $produk)
+    public function show(Request $request)
     {
-        return view('pages.product.show', compact('produk'));
+        $product = Product::with('subcategory')->onlyTrashed()->get();
+        $subcategory = Subcategory::all();
+
+        if ($request->ajax()) {
+            $rowData = [];
+
+            foreach ($product as $row) {
+                $subcategory = $row->subcategory;
+
+                $rowData[] = [
+                    'id_product' => $row->id_product,
+                    'image' => $row->image,
+                    'name' => $row->name,
+                    'description' => $row->description,
+                    'price' => $row->price,
+                    'subcategory' => $subcategory->name,
+                ];
+            }
+            return DataTables::of($rowData)->toJson();
+        }
+
+        return view('pages.admin.product.show');
     }
 
     public function update(Request $request)

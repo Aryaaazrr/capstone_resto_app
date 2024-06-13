@@ -208,6 +208,7 @@
         </script>
     @endif
 
+    
     <script>
         $(document).ready(function() {
             $('#myTableOrder').DataTable({
@@ -297,6 +298,7 @@
                 })
                 .then(response => response.json())
                 .then(data => {
+                    console.log(data);
                     if (data.snap_token) {
                         snap.pay(data.snap_token);
                     } else {

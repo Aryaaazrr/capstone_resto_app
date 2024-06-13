@@ -19,7 +19,7 @@
                         <div class="d-flex justify-content-between">
                             <h5 class="card-title">List Product</h5>
                             <div class="h-10 d-flex align-items-center">
-                                <a href="{{ route('admin.category.show') }}" class="btn btn-danger mx-2"><i
+                                <a href="{{ route('admin.product.show') }}" class="btn btn-danger mx-2"><i
                                         class="bi bi-trash"></i> Trash Product</a>
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#basicModal">
@@ -117,7 +117,7 @@
                             <div class="tab-pane fade show active" id="bordered-justified-home" role="tabpanel"
                                 aria-labelledby="home-tab">
                                 <div class="table-responsive">
-                                    <table class="table table-hover table-bordered text-center" id="myTableCategory">
+                                    <table class="table table-hover table-bordered text-center" id="myTableProduct">
                                         <thead class="thead-light">
                                             <tr>
                                                 <th class="text-center">No</th>
@@ -246,7 +246,7 @@
 
     <script>
         $(document).ready(function() {
-            $('#myTableCategory').DataTable({
+            $('#myTableProduct').DataTable({
                 serverSide: true,
                 responsive: true,
                 processing: true,
@@ -297,8 +297,8 @@
                                 'Edit' +
                                 '</button>' +
                                 '<button type="button" class="btn btn-danger m-1" onclick="confirmDelete(' +
-                                data.id_category + ')" ' +
-                                'data-id="' + data.id_category + '">' +
+                                data.id_product + ')" ' +
+                                'data-id="' + data.id_product + '">' +
                                 'Delete' +
                                 '</button>' +
                                 '</div>' +
@@ -343,7 +343,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: "{{ url('admin/category/force-delete') }}/" + id,
+                        url: "{{ url('admin/product/force-delete') }}/" + id,
                         type: 'DELETE',
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -354,7 +354,7 @@
                                 'Data has been successfully deleted permanently.',
                                 'success'
                             );
-                            $('#myTableCategory').DataTable().ajax.reload();
+                            $('#myTableProduct').DataTable().ajax.reload();
                         },
                         error: function(xhr, status, error) {
                             Swal.fire(
@@ -366,7 +366,7 @@
                     });
                 } else if (result.isDenied) {
                     $.ajax({
-                        url: "{{ url('admin/category') }}/" + id,
+                        url: "{{ url('admin/product') }}/" + id,
                         type: 'DELETE',
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -377,7 +377,7 @@
                                 'Data is moved to trash.',
                                 'success'
                             );
-                            $('#myTableCategory').DataTable().ajax.reload();
+                            $('#myTableProduct').DataTable().ajax.reload();
                         },
                         error: function(xhr, status, error) {
                             Swal.fire(
