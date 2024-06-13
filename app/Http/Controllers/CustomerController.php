@@ -12,6 +12,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Midtrans\Config;
@@ -57,7 +58,6 @@ class CustomerController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request->all());
         $validator = Validator::make($request->all(), [
             'name' => 'required|min:4',
             'email' => 'required|email',
@@ -90,9 +90,6 @@ class CustomerController extends Controller
             $transaction->reservation_time = $request->time;
             $transaction->reservation_people = $request->people;
             $transaction->reservation_message = $request->message;
-
-            $snapToken = $this->getSnapToken($transaction, $grandTotal);
-            $transaction->token_payment = $snapToken;
 
             if ($transaction->save()) {
                 foreach ($request->all() as $key => $value) {
@@ -172,25 +169,50 @@ class CustomerController extends Controller
         return $total;
     }
 
-    public function getSnapToken($transaction, $grandTotal)
+    public function getSnapToken($transaction)
     {
-        $params = [
-            'transaction_details' => [
-                'order_id' => $transaction->no_receipt,
-                'gross_amount' => $grandTotal,
-            ],
-            'customer_details' => [
-                'first_name' => Auth::user()->name,
-                'email' => Auth::user()->email,
-                'phone' => $transaction->no_telp,
-            ],
-        ];
-
         try {
-            $snapToken = Snap::getSnapToken($params);
+            $transaction = Transaction::find($transaction);
+
+            $params = [
+                'transaction_details' => [
+                    'order_id' => $transaction->no_receipt,
+                    'gross_amount' => $transaction->grand_total,
+                ],
+                'customer_details' => [
+                    'first_name' => Auth::user()->name,
+                    'email' => Auth::user()->email,
+                    'phone' => $transaction->no_telp,
+                ],
+            ];
+
+            $snapToken = \Midtrans\Snap::getSnapToken($params);
+            $transaction->token_payment = $snapToken;
+            $transaction->save();
+
             return $snapToken;
         } catch (\Exception $e) {
             throw new Exception("Error getting Snap token: " . $e->getMessage());
         }
     }
+
+    // public function getSnapToken(Request $request)
+    // {
+    //     Log::info('Request received', $request->all());
+
+    //     $request->validate([
+    //         'id_transaction' => 'required|exists:transactions,id_transaction',
+    //     ]);
+
+    //     $transaction = Transaction::find($request->id_transaction);
+
+    //     if (!$transaction) {
+    //         Log::error('Transaction not found', ['id_transaction' => $request->id_transaction]);
+    //         return response()->json(['error' => 'Transaction not found'], 404);
+    //     }
+
+    //     Log::info('Transaction found', ['transaction' => $transaction]);
+
+    //     return response()->json(['snap_token' => $transaction->token_payment]);
+    // }
 }

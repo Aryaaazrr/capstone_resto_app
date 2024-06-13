@@ -284,18 +284,16 @@
             });
         });
 
-        $('#myTableOrder tbody').on('click', '.pay-button', function(event) {
+        $('#myTableOrder tbody').on('click', '#pay-button', function(event) {
             var transactionId = $(this).data('id');
 
-            fetch('{{ route('customer.reservation.getToken') }}', {
+            fetch('reservation/get-snap-token', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
                     },
-                    body: JSON.stringify({
-                        id_transaction: transactionId
-                    })
+                    body: JSON.stringify({})
                 })
                 .then(response => response.json())
                 .then(data => {

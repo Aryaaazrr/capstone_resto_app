@@ -174,24 +174,33 @@
                 </div>
 
                 <div class="row" data-aos="fade-up" data-aos-delay="100">
-                    <div class="col-lg-12">
-                        <ul class="nav nav-tabs justify-content-center" id="menu-tabs" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="all-tab" data-toggle="tab" href="#all"
-                                    role="tab" aria-controls="all" aria-selected="true">Semua</a>
-                            </li>
+                    <div class="col-lg-12 d-flex justify-content-center">
+                        <ul id="menu-flters">
+                            <li data-filter="*" class="filter-active">Semua</li>
                             @foreach ($subcategory as $item)
-                                <li class="nav-item">
-                                    <a class="nav-link" id="{{ $item->name }}-tab" data-toggle="tab"
-                                        href="#{{ $item->name }}" role="tab" aria-controls="{{ $item->name }}"
-                                        aria-selected="false">{{ $item->name }}</a>
-                                </li>
+                                <li data-filter=".filter-{{ $item->id_subcategory }}">{{ $item->name }}</li>
                             @endforeach
                         </ul>
                     </div>
                 </div>
 
-                <div class="menu-container tab-content" data-aos="fade-up" data-aos-delay="200">
+                <div class="row menu-container" data-aos="fade-up" data-aos-delay="200">
+                    @foreach ($product as $item)
+                        <div class="col-lg-6 menu-item filter-{{ $item->id_subcategory }}">
+                            <img src="{{ asset('uploads/menu/' . $item->image) }}" class="menu-img" alt="">
+                            <div class="menu-content">
+                                <a href="#">{{ $item->name }}</a>
+                                <span>Rp {{ number_format($item->price, 2, ',', '.') }}</span>
+                            </div>
+                            <div class="menu-ingredients">
+                                {{ $item->description }}
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+
+                {{-- <div class="menu-container tab-content" data-aos="fade-up" data-aos-delay="200">
                     <div class="row tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
                         @foreach ($product as $item)
                             <div class="col-lg-6 col-md-6 col-sm-12 menu-item">
@@ -231,8 +240,7 @@
                         @endforeach
                     </div>
 
-                </div>
-
+                </div> --}}
             </div>
 
             </div>
