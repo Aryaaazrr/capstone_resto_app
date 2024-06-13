@@ -24,8 +24,15 @@ class CustomerController extends Controller
     {
         $id_customer = Auth::id();
         $subcategory = Subcategory::all();
-
-        return view('pages.home.index', ['id_customer' => $id_customer, 'subcategory' => $subcategory]);
+        $product = Product::with('subcategory')->get();
+        return view(
+            'pages.home.index',
+            [
+                'id_customer' => $id_customer,
+                'subcategory' => $subcategory,
+                'product' => $product
+            ]
+        );
     }
 
     public function create()
