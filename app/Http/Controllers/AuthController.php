@@ -24,11 +24,6 @@ class AuthController extends Controller
         $this->googleService = $googleService;
     }
 
-    public function redirectToGoogle()
-    {
-        return Socialite::driver('google')->redirect();
-    }
-
     public function google()
     {
         return Socialite::driver('google')->redirect();
@@ -36,37 +31,41 @@ class AuthController extends Controller
 
     public function handleGoogle()
     {
-        $googleUser = Socialite::driver('google')->user();
+        try {
+            $googleUser = Socialite::driver('google')->stateless()->user();
 
-        $existingUser = User::where('email', $googleUser->email)->first();
+            $existingUser = User::where('email', $googleUser->email)->first();
 
-        $expiresInSeconds = $googleUser->expiresIn;
-        $expiryDateTime = now()->addSeconds($expiresInSeconds);
+            $expiresInSeconds = $googleUser->expiresIn;
+            $expiryDateTime = now()->addSeconds($expiresInSeconds);
 
-        if ($existingUser) {
-            $existingUser->update([
-                'google_token' => $googleUser->token,
-                'google_refresh_token' => $googleUser->refreshToken,
-                'google_token_expiry' => $expiryDateTime,
-                'email_verified_at' => now(),
-            ]);
-            Auth::login($existingUser);
-        } else {
-            $newUser = User::create([
-                'google_id' => $googleUser->id,
-                'google_token' => $googleUser->token,
-                'google_refresh_token' => $googleUser->refreshToken,
-                'name' => $googleUser->name,
-                'email' => $googleUser->email,
-                'password' => Hash::make('12345678'),
-                'email_verified_at' => now(),
-                'id_role' => 2,
-            ]);
+            if ($existingUser) {
+                $existingUser->update([
+                    'google_token' => $googleUser->token,
+                    'google_refresh_token' => $googleUser->refreshToken,
+                    'google_token_expiry' => $expiryDateTime,
+                    'email_verified_at' => now(),
+                ]);
+                Auth::login($existingUser);
+            } else {
+                $newUser = User::create([
+                    'google_id' => $googleUser->id,
+                    'google_token' => $googleUser->token,
+                    'google_refresh_token' => $googleUser->refreshToken,
+                    'name' => $googleUser->name,
+                    'email' => $googleUser->email,
+                    'password' => Hash::make('12345678'),
+                    'email_verified_at' => now(),
+                    'id_role' => 2,
+                ]);
 
-            Auth::login($newUser);
+                Auth::login($newUser);
+            }
+
+            return redirect()->intended('/dashboard');
+        } catch (\Exception $e) {
+            return redirect('/login')->withErrors(['error' => 'Failed to authenticate using Google.']);
         }
-
-        return redirect()->intended('/dashboard');
     }
 
     public function someGoogleApiFunction(User $user)
