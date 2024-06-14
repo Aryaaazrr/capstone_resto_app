@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CustomerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +18,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('reservation/get-snap-token', [CustomerController::class, 'getSnapToken'])->name('customer.reservation.getToken');
+Route::post('reservation/webhook/midtrans', [CustomerController::class, 'webhook'])->name('customer.reservation.webhook');

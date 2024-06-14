@@ -26,7 +26,7 @@
                         snap.pay(data.snap_token);
                     } else {
                         alert('Error getting Snap token');
-                    }
+                    }   
                 });
         };
     </script>

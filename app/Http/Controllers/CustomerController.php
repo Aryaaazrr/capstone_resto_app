@@ -12,6 +12,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -176,50 +177,124 @@ class CustomerController extends Controller
         return $total;
     }
 
-    public function getSnapToken($transaction)
+    public function getSnapToken(Request $request)
     {
-        try {
-            $transaction = Transaction::find($transaction);
+        $request->validate([
+            'id_transaction' => 'required|exists:tbl_transactions,id_transaction'
+        ]);
 
-            $params = [
-                'transaction_details' => [
-                    'order_id' => $transaction->no_receipt,
-                    'gross_amount' => $transaction->grand_total,
-                ],
-                'customer_details' => [
-                    'first_name' => Auth::user()->name,
-                    'email' => Auth::user()->email,
-                    'phone' => $transaction->no_telp,
-                ],
+        $transaction = Transaction::where('id_transaction', $request->id_transaction)->with(['transaction_details', 'user'])->first();
+        $details = TransactionDetails::where('id_transaction', $request->id_transaction)->with('product')->get();
+
+        if (!$transaction) {
+            return response()->json(['error' => 'Transaction not found'], 404);
+        }
+
+        $items = $details->map(function ($detail) {
+            return [
+                'id' => $detail->product->id_product,
+                'price' => $detail->product->price,
+                'quantity' => $detail->quantity,
+                'name' => $detail->product->name,
             ];
+        })->toArray();
 
-            $snapToken = \Midtrans\Snap::getSnapToken($params);
-            $transaction->token_payment = $snapToken;
-            $transaction->save();
+        $params = [
+            'transaction_details' => [
+                'order_id' => $transaction->id_transaction,
+                'gross_amount' => $transaction->grand_total,
+            ],
+            'item_details' => $items,
+            'customer_details' => [
+                'first_name' => $transaction->user->name,
+                'email' => $transaction->user->email,
+                'phone' => $transaction->no_telp,
+            ],
+        ];
 
-            return $snapToken;
+        $auth = base64_encode(env('MIDTRANS_SERVER_KEY') . ':');
+
+        try {
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Authorization' => "Basic $auth",
+            ])->post('https://app.sandbox.midtrans.com/snap/v1/transactions', $params);
+
+            $response = json_decode($response->body());
+
+            if (isset($response->token)) {
+                $transaction->token_payment = $response->token;
+                $transaction->link_payment = $response->redirect_url;
+                $transaction->save();
+
+                return response()->json(['snap_token' => $response->token, 'redirect_url' => $response->redirect_url]);
+            } else {
+                return response()->json(['error' => 'Error generating Snap token'], 500);
+            }
         } catch (\Exception $e) {
-            throw new Exception("Error getting Snap token: " . $e->getMessage());
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
-    // public function getSnapToken(Request $request)
-    // {
-    //     Log::info('Request received', $request->all());
+    public function webhook(Request $request)
+    {
+        try {
+            $payload = $request->json()->all();
 
-    //     $request->validate([
-    //         'id_transaction' => 'required|exists:transactions,id_transaction',
-    //     ]);
+            if (!isset($payload['order_id'])) {
+                return response()->json(['error' => 'Invalid payload: order_id is missing'], 400);
+            }
 
-    //     $transaction = Transaction::find($request->id_transaction);
+            $transactionId = $payload['order_id'];
 
-    //     if (!$transaction) {
-    //         Log::error('Transaction not found', ['id_transaction' => $request->id_transaction]);
-    //         return response()->json(['error' => 'Transaction not found'], 404);
-    //     }
+            $transaction = Transaction::where('id_transaction', $transactionId)->first();
 
-    //     Log::info('Transaction found', ['transaction' => $transaction]);
+            if (!$transaction) {
+                return response()->json(['error' => 'Transaction not found'], 404);
+            }
 
-    //     return response()->json(['snap_token' => $transaction->token_payment]);
-    // }
+            $auth = base64_encode(env('MIDTRANS_SERVER_KEY') . ':');
+
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Authorization' => "Basic $auth",
+            ])->get("https://api.sandbox.midtrans.com/v2/$transactionId/status");
+
+            $response = json_decode($response->body());
+
+            if ($transaction->status_payment === 'settlement' || $transaction->status_payment === 'capture') {
+                return response()->json('Payment has been already processed');
+            }
+
+            switch ($response->transaction_status) {
+                case 'capture':
+                case 'settlement':
+                    $transaction->status_payment = 'Settlement';
+                    break;
+                case 'pending':
+                    $transaction->status_payment = 'Pending';
+                    break;
+                case 'deny':
+                    $transaction->status_payment = 'Deny';
+                    break;
+                case 'expire':
+                    $transaction->status_payment = 'Expire';
+                    break;
+                case 'cancel':
+                    $transaction->status_payment = 'Cancel';
+                    break;
+                default:
+                    $transaction->status_payment = 'Failure';
+                    break;
+            }
+
+            if ($transaction->save()) {
+                return response()->json('success');
+            } else {
+                return response()->json(['error' => 'Failed to update payment status'], 500);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 }

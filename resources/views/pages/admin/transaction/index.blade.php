@@ -123,7 +123,7 @@
                             if (data == 'Pending') {
                                 return '<span class="badge text-bg-warning text-white">' + data +
                                     '</span>';
-                            } else if (data == 'Paid') {
+                            } else if (data == 'Settlement') {
                                 return '<span class="badge text-bg-success text-white">' + data +
                                     '</span>';
                             } else {
