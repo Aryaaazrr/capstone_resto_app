@@ -33,10 +33,10 @@
                                         </div>
 
                                         <div class="col-12 my-2">
-                                            <p class="small mb-0 text-end"><a href="" class="text-success">Forgot
+                                            {{-- <p class="small mb-0 text-end"><a href="" class="text-success">Forgot
                                                     Password
                                                     ?</a>
-                                            </p>
+                                            </p> --}}
                                         </div>
 
                                         <div class="col-12 mt-2">

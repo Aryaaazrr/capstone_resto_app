@@ -44,27 +44,10 @@
             </ul>
         </li>
         <li class="nav-item">
-            <a class="@if (request()->is('admin/transaction') || Str::contains(request()->url(), 'admin/history')) nav-link @else nav-link collapsed @endif"
-                data-bs-target="#forms-nav" data-bs-toggle="collapse" href="">
-                <i class="bi bi-card-checklist"></i><span>Transaction</span><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                <li>
-                    <a href="{{ route('admin.transaction.index') }}">
-                        <i class="bi bi-circle"></i><span>Transaction</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('admin.history.index') }}">
-                        <i class="bi bi-circle"></i><span>History</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="{{ route('admin.history.index') }}">
-                <i class="bi bi-stars"></i>
-                <span>Review</span>
+            <a class="@if (request()->is('admin/transaction')) nav-link @else nav-link collapsed @endif"
+                href="{{ route('admin.transaction.index') }}">
+                <i class="bi bi-card-checklist"></i>
+                <span>Transaction</span>
             </a>
         </li>
 
