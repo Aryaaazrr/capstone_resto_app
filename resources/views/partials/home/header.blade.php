@@ -27,37 +27,7 @@
                         <li><a class="nav-link scrollto active" href="#hero">Beranda</a></li>
                         <li><a class="nav-link scrollto" href="#about">Tentang</a></li>
                         <li><a class="nav-link scrollto" href="#blog">Blog</a></li>
-                        <li class="dropdown"><a class="nav-link scrollto" href="#menu"><span>Menu</span> <i
-                                    class="bi bi-chevron-down"></i></a>
-                            <ul>
-                                <li class="dropdown"><a href="#"><span>Menu Makanan</span> <i
-                                            class="bi bi-chevron-right"></i></a>
-                                    <ul>
-                                        <li><a href="#">Menu Utama</a></li>
-                                        <li><a href="#">Menu Dessert</a></li>
-                                        <li><a href="#">Menu Lauk</a></li>
-                                        <li><a href="#">Menu Snack</a></li>
-                                    </ul>
-                                </li>
-                                <li class="dropdown"><a href="#"><span>Menu Minuman</span> <i
-                                            class="bi bi-chevron-right"></i></a>
-                                    <ul>
-                                        <li><a href="#">Juss & Smoothies</a></li>
-                                        <li><a href="#">Dingin Menyegarkan</a></li>
-                                        <li><a href="#">Panas Menghangatkan</a></li>
-                                        <li><a href="#">Hot & Cold</a></li>
-                                    </ul>
-                                </li>
-                                <li class="dropdown"><a href="#"><span>Menu Paket Raminten</span> <i
-                                            class="bi bi-chevron-right"></i></a>
-                                    <ul>
-                                        <li><a href="#">Menu Paket Reguler</a></li>
-                                        <li><a href="#">Menu Paket Reservasi</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="#">Kaos Raminten</a></li>
-                            </ul>
-                        </li>
+                        <li><a class="nav-link scrollto" href="#menu">Menu</a></li>
                         <li><a class="nav-link scrollto" href="#gallery">Galeri</a></li>
                     @endif
                     @if (Auth::user())
