@@ -97,7 +97,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('transaction/accept/{id}', [TransactionController::class, 'accept'])->name('admin.transaction.accept');
 
         Route::get('profile', [ProfileController::class, 'index'])->name('admin.profile.index');
-        Route::put('profile/update', [ProfileController::class, 'update'])->name('admin.profile.update');
+        Route::put('profile/{id}', [ProfileController::class, 'update'])->name('admin.profile.update');
     });
 
     Route::middleware('customer')->group(function () {

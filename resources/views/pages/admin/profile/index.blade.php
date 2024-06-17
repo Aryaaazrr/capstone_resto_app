@@ -49,7 +49,7 @@
                             <div class="tab-pane fade show active profile-change-password pt-3"
                                 id="profile-change-password">
                                 <!-- Change Password Form -->
-                                <form action="{{ route('admin.profile.update', Auth::user()->id_users) }}" method="POST">
+                                <form action="{{ route('admin.profile.update', Auth::user()->id_user) }}" method="POST">
                                     @csrf
                                     @method('PUT')
                                     <div class="row mb-3">
@@ -100,6 +100,15 @@
                 icon: 'success',
                 title: 'Berhasil',
                 text: '{{ session('success') }}'
+            });
+        </script>
+    @endif
+    @if ($errors->any())
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Oopss...',
+                text: '{{ $errors->first() }}'
             });
         </script>
     @endif

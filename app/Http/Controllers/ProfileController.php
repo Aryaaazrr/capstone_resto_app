@@ -61,7 +61,7 @@ class ProfileController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'password' => 'required|min:6',
+            'password' => 'required',
             'newpassword' => 'required|min:6',
             'renewpassword' => 'required|min:6|same:newpassword',
         ]);
@@ -70,8 +70,11 @@ class ProfileController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
-        $newpassword = $request->input('newpassword');
+        if (!Hash::check($request->input('password'), $users->password)) {
+            return back()->withErrors(['error' => 'Current password is incorrect.']);
+        }
 
+        $newpassword = $request->input('newpassword');
         $users->password = Hash::make($newpassword);
         $users->save();
 
