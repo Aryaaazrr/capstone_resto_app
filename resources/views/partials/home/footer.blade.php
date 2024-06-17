@@ -6,7 +6,7 @@
 
                 <div class="col-lg-3 col-md-6">
                     <div class="footer-info">
-                        <h3>Restaurantly</h3>
+                        <h3>RAMINTEN RESTO</h3>
                         <p>
                             A108 Adam Street <br>
                             NY 535022, USA<br><br>
@@ -24,14 +24,15 @@
                 </div>
 
                 <div class="col-lg-2 col-md-6 footer-links">
-                    <h4>Useful Links</h4>
+                    {{-- <h4>Useful Links</h4>
                     <ul>
-                        <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
-                        <li><i class="bx bx-chevron-right"></i> <a href="#">About us</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a class="nav-link scrollto active"
+                                href="#hero">Beranda</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="#">Tentanf</a></li>
                         <li><i class="bx bx-chevron-right"></i> <a href="#">Services</a></li>
                         <li><i class="bx bx-chevron-right"></i> <a href="#">Terms of service</a></li>
                         <li><i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
-                    </ul>
+                    </ul> --}}
                 </div>
 
                 <div class="col-lg-3 col-md-6 footer-links">
@@ -60,14 +61,7 @@
 
     <div class="container">
         <div class="copyright">
-            &copy; Copyright <strong><span>Restaurantly</span></strong>. All Rights Reserved
-        </div>
-        <div class="credits">
-            <!-- All the links in the footer should remain intact. -->
-            <!-- You can delete the links only if you purchased the pro version. -->
-            <!-- Licensing information: https://bootstrapmade.com/license/ -->
-            <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/restaurantly-restaurant-template/ -->
-            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+            &copy; Copyright <strong><span>RamintenResto</span></strong>. All Rights Reserved
         </div>
     </div>
 </footer>
