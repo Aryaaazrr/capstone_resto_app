@@ -59,7 +59,6 @@
                             </ul>
                         </li>
                         <li><a class="nav-link scrollto" href="#gallery">Galeri</a></li>
-                        <li><a class="nav-link scrollto" href="#contact">Kontak</a></li>
                     @endif
                     @if (Auth::user())
                         <li class="dropdown"><a class="nav-link scrollto" href="">
