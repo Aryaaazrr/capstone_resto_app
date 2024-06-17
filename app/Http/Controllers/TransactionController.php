@@ -49,7 +49,7 @@ class TransactionController extends Controller
         if ($transaction) {
             $transaction->status_transaction = 'Process';
             if ($transaction->save()) {
-                return response()->json(['message' => 'Data deleted successfully.']);
+                return response()->json(['message' => 'Transaction successfully confirmed.']);
             }
         }
         return response()->json(['message' => 'Data not found.'], 404);
@@ -64,7 +64,7 @@ class TransactionController extends Controller
         if ($transaction) {
             $transaction->status_transaction = 'Cancel';
             if ($transaction->save()) {
-                return response()->json(['message' => 'Data deleted successfully.']);
+                return response()->json(['message' => 'Transaction cancelled.']);
             }
         }
         return response()->json(['message' => 'Data not found.'], 404);
@@ -103,9 +103,16 @@ class TransactionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function accept(string $id)
     {
-        //
+        $transaction = Transaction::find($id);
+        if ($transaction) {
+            $transaction->status_transaction = 'Completed';
+            if ($transaction->save()) {
+                return response()->json(['message' => 'Payment transaction successfully received.']);
+            }
+        }
+        return response()->json(['message' => 'Data not found.'], 404);
     }
 
     /**

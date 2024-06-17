@@ -14,6 +14,31 @@
                                     <div class="d-flex justify-content-center py-4">
                                         <img src="{{ asset('home/assets/img/logo/logo.jpg') }}" alt="logo">
                                     </div>
+
+                                    @if (session('success'))
+                                        <div class="alert alert-success alert-dismissible text-white" role="alert">
+                                            <ul class="list-disc list-inside">
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                            <button type="button" class="btn-close text-lg py-3 " data-bs-dismiss="alert"
+                                                aria-label="Close">
+                                            </button>
+                                        </div>
+                                    @endif
+                                    @if ($errors->any())
+                                        <div class="alert alert-danger alert-dismissible text-white" role="alert">
+                                            <ul class="list-disc list-inside">
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                            <button type="button" class="btn-close text-lg py-3 " data-bs-dismiss="alert"
+                                                aria-label="Close">
+                                            </button>
+                                        </div>
+                                    @endif
                                     {!! session('msg') !!}
                                     <form action="{{ route('login.process') }}" method="POST"
                                         class="row g-3 needs-validation pt-2" novalidate>

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Transaction;
 use App\Models\Product;
 use Carbon\Carbon;
+
 class DashboardController extends Controller
 {
     /**
@@ -17,15 +18,15 @@ class DashboardController extends Controller
         $monthStart = Carbon::now()->startOfMonth();
         $yearStart = Carbon::now()->startOfYear();
 
-        $transactionsThisMonth = Transaction::whereBetween('created_at', [$monthStart, $today])->count();
+        $transactionsThisMonth = Transaction::where('status_transaction', '==', 'Completed')->whereBetween('created_at', [$monthStart, $today])->count();
 
         $totalProducts = Product::count();
         $revenueThisMonth = Transaction::whereBetween('created_at', [$monthStart, $today])->sum('grand_total');
 
-        $formattedrevenueThisMonth = "Rp. ".number_format($revenueThisMonth, 0, ',', '.');
+        $formattedrevenueThisMonth = "Rp. " . number_format($revenueThisMonth, 0, ',', '.');
         $chartData = $this->getChartData();
 
-        return view('pages.admin.dashboard.index', compact('formattedrevenueThisMonth','transactionsThisMonth', 'revenueThisMonth', 'chartData', 'totalProducts'));
+        return view('pages.admin.dashboard.index', compact('formattedrevenueThisMonth', 'transactionsThisMonth', 'revenueThisMonth', 'chartData', 'totalProducts'));
     }
     private function getChartData()
     {
@@ -40,7 +41,7 @@ class DashboardController extends Controller
             ->get();
 
         foreach ($revenues as $revenue) {
-            $chartCategories[] = $revenue->date; 
+            $chartCategories[] = $revenue->date;
             $revenueData[] = $revenue->total;
         }
 

@@ -94,10 +94,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('transaction/{id}', [TransactionController::class, 'show'])->name('admin.transaction.show');
         Route::post('transaction/confirm/{id}', [TransactionController::class, 'confirm'])->name('admin.transaction.confirm');
         Route::post('transaction/cancel/{id}', [TransactionController::class, 'cancel'])->name('admin.transaction.cancel');
-
-        Route::get('history', [HistoryTransactionController::class, 'index'])->name('admin.history.index');
+        Route::post('transaction/accept/{id}', [TransactionController::class, 'accept'])->name('admin.transaction.accept');
 
         Route::get('profile', [ProfileController::class, 'index'])->name('admin.profile.index');
+        Route::put('profile/update', [ProfileController::class, 'update'])->name('admin.profile.update');
     });
 
     Route::middleware('customer')->group(function () {

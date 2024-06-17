@@ -279,6 +279,7 @@ class CustomerController extends Controller
                     break;
                 case 'expire':
                     $transaction->status_payment = 'Expire';
+                    $transaction->status_transaction = 'Canceled';
                     break;
                 case 'cancel':
                     $transaction->status_payment = 'Cancel';

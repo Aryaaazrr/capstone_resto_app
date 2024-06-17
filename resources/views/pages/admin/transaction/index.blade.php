@@ -105,7 +105,7 @@
                                 return '<span class="badge text-bg-warning text-white">' + data +
                                     '</span>';
                             } else if (data == 'Process') {
-                                return '<span class="badge text-bg-secondary text-white">' + data +
+                                return '<span class="badge text-bg-info text-dark">' + data +
                                     '</span>';
                             } else if (data == 'Completed') {
                                 return '<span class="badge text-bg-success text-white">' + data +
@@ -151,9 +151,36 @@
                                     '</a>' +
                                     '</div>' +
                                     '</div>';
+                            } else if (data.status_transaction == 'Completed') {
+                                return '<div class="row justify-content-center">' +
+                                    '<div class="col-auto">' +
+                                    '<a href="{{ route('admin.transaction.show', '') }}/' + data
+                                    .id_transaction +
+                                    '" class="btn btn-secondary m-1" ' +
+                                    'data-id="' + data.id_category + '">' +
+                                    'Detail' +
+                                    '</a>' +
+                                    '</div>' +
+                                    '</div>';
+                            } else if (data.status_transaction == 'Cancel') {
+                                return '<div class="row justify-content-center">' +
+                                    '<div class="col-auto">' +
+                                    '<a href="{{ route('admin.transaction.show', '') }}/' + data
+                                    .id_transaction +
+                                    '" class="btn btn-secondary m-1" ' +
+                                    'data-id="' + data.id_category + '">' +
+                                    'Detail' +
+                                    '</a>' +
+                                    '</div>' +
+                                    '</div>';
                             } else {
                                 return '<div class="row justify-content-center">' +
                                     '<div class="col-auto">' +
+                                    '<button type="button" class="btn btn-primary m-1" onclick="complete(' +
+                                    data.id_transaction + ')" ' +
+                                    'data-id="' + data.id_transaction + '">' +
+                                    'Accept' +
+                                    '</button>' +
                                     '<a href="{{ route('admin.transaction.show', '') }}/' + data
                                     .id_transaction +
                                     '" class="btn btn-secondary m-1" ' +
@@ -222,6 +249,44 @@
                             Swal.fire(
                                 'Transaction cancelled!',
                                 'Data cancelled successfully.',
+                                'success'
+                            );
+                            $('#myTableTransaction').DataTable().ajax.reload();
+                        },
+                        error: function(xhr, status, error) {
+                            Swal.fire(
+                                'Oppss!',
+                                'An error occurred while deleting data. Please try again',
+                                'error'
+                            );
+                        }
+                    });
+                }
+            });
+        }
+
+        function complete(id) {
+            Swal.fire({
+                title: 'Warning',
+                text: "Receive payment to complete the transaction process?",
+                icon: 'warning',
+                showCloseButton: true,
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Accept',
+                cancelButtonText: 'Back'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ url('admin/transaction/accept') }}/" + id,
+                        type: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            Swal.fire(
+                                'Transaction accepted!',
+                                'Data received successfully.',
                                 'success'
                             );
                             $('#myTableTransaction').DataTable().ajax.reload();
