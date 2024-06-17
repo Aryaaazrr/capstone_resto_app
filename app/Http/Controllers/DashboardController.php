@@ -21,7 +21,7 @@ class DashboardController extends Controller
         $transactionsThisMonth = Transaction::whereBetween('created_at', [$monthStart, $today])->count();
 
         $totalProducts = Product::count();
-        $revenueThisMonth = Transaction::where('status_transaction', 'Completed')->whereBetween('created_at', [$monthStart, $today])->sum('grand_total');
+        $revenueThisMonth = Transaction::where('status_payment', 'Settlement')->whereBetween('created_at', [$monthStart, $today])->sum('grand_total');
 
         $formattedrevenueThisMonth = "Rp. " . number_format($revenueThisMonth, 0, ',', '.');
         $chartData = $this->getChartData();
