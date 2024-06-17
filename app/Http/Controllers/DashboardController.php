@@ -18,10 +18,10 @@ class DashboardController extends Controller
         $monthStart = Carbon::now()->startOfMonth();
         $yearStart = Carbon::now()->startOfYear();
 
-        $transactionsThisMonth = Transaction::where('status_transaction', '==', 'Completed')->whereBetween('created_at', [$monthStart, $today])->count();
+        $transactionsThisMonth = Transaction::whereBetween('created_at', [$monthStart, $today])->count();
 
         $totalProducts = Product::count();
-        $revenueThisMonth = Transaction::whereBetween('created_at', [$monthStart, $today])->sum('grand_total');
+        $revenueThisMonth = Transaction::where('status_transaction', 'Completed')->whereBetween('created_at', [$monthStart, $today])->sum('grand_total');
 
         $formattedrevenueThisMonth = "Rp. " . number_format($revenueThisMonth, 0, ',', '.');
         $chartData = $this->getChartData();
